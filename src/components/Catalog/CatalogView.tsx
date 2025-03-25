@@ -1,12 +1,10 @@
-import React, {FC, useEffect, useState} from 'react';
-import {Button, Card, Container, Form, Table} from 'react-bootstrap';
-import {ChevronRight, Pencil, Trash} from 'react-bootstrap-icons';
-import {Catalog} from "../../model/Catalog";
-import {CatalogGateway} from "../../service/CatalogGateway";
-import {Dataset} from "../../model/Dataset";
+// src/components/CatalogView.tsx
+import React, { FC, useEffect, useState, ReactNode } from 'react';
+import { Button, Card, Container, Form, Table } from 'react-bootstrap';
+import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
+import {CatalogService} from "../../service/CatalogService";
 
-interface CatalogProps {
-}
+interface CatalogProps {}
 
 interface TableRow {
     id: number;
@@ -18,137 +16,149 @@ interface TableRow {
     level: number;
 }
 
-const CatalogView: FC<CatalogProps> = () => {
-    const [catalog, setCatalog] = useState<Catalog | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+interface RenderProps {
+    loading: boolean;
+    error: string | null;
+    tableData: TableRow[];
+    hasCatalog: boolean;
+}
 
+const CatalogView: FC<CatalogProps> = () => {
+    const [content, setContent] = useState<ReactNode>(null);
+    const catalogService = new CatalogService();
     const path = '/catalog';
 
-    useEffect(() => {
-        const loadCatalog = async () => {
-            try {
-                setLoading(true);
-                const fetchedCatalog = await CatalogGateway.fetchCatalog();
-                setCatalog(fetchedCatalog);
-            } catch (err) {
-                setError('Failed to load catalog data');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadCatalog();
-    }, []);
-
-    const flattenCatalog = (cat: Catalog, level: number = 0): TableRow[] => {
-        const rows: TableRow[] = [];
-
-        rows.push({
-            id: cat.id, name: cat.title, schema: '-', lastUpdate: '21 Jan 2013', actions: ['navigate'], isCatalog: true, level,
-        });
-
-        if (cat.datasets && cat.datasets.length > 0) {
-            cat.datasets.forEach((dataset: Dataset) => {
-                rows.push({
-                    id: dataset.id, name: dataset.languageSpecificDatasetInfo[0]?.title || 'Untitled Dataset', schema: dataset.dataScheme?.name || 'not defined', lastUpdate: '21 Jan 2013', // Mocked static date
-                    actions: ['edit', 'delete'], isCatalog: false, level: level + 1,
-                });
-            });
+    const renderContent = ({ loading, error, tableData, hasCatalog }: RenderProps): ReactNode => {
+        if (loading) {
+            return (
+                <div
+                    style={{
+                        backgroundColor: '#ece9e2',
+                        minHeight: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    Loading...
+                </div>
+            );
         }
 
-        if (cat.catalogs && cat.catalogs.length > 0) {
-            cat.catalogs.forEach((subCatalog: Catalog) => {
-                rows.push(...flattenCatalog(subCatalog, level + 1));
-            });
+        if (error) {
+            return (
+                <div
+                    style={{
+                        backgroundColor: '#ece9e2',
+                        minHeight: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    Error: {error}
+                </div>
+            );
         }
 
-        return rows;
+        if (!hasCatalog) {
+            return (
+                <div
+                    style={{
+                        backgroundColor: '#ece9e2',
+                        minHeight: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    No catalog data available
+                </div>
+            );
+        }
+
+        return (
+            <div style={{ backgroundColor: '#ece9e2', minHeight: '100vh' }}>
+                <Container fluid className="d-flex justify-content-center pt-5">
+                    <Card className="col-8" style={{ borderRadius: '10px' }}>
+                        <Card.Header
+                            style={{ backgroundColor: '#ece9e2', color: '#2c3e50', fontWeight: 'bold' }}
+                            className="text-center"
+                        >
+                            Datasets catalog
+                        </Card.Header>
+                        <Card.Body>
+                            {path}
+                            <Table hover>
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <Form.Check type="checkbox" />
+                                    </th>
+                                    <th>Catalog / Dataset name</th>
+                                    <th>Applied Schema</th>
+                                    <th>Last update</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {tableData.map((row) => (
+                                    <tr key={row.id}>
+                                        <td>
+                                            <Form.Check type="checkbox" />
+                                        </td>
+                                        <td>
+                        <span style={{ marginLeft: `${row.level * 20}px`, marginRight: '5px' }}>
+                          {row.isCatalog ? '📁' : '📄'}
+                        </span>
+                                            {row.name}
+                                        </td>
+                                        <td>{row.schema}</td>
+                                        <td>{row.lastUpdate}</td>
+                                        <td>
+                                            {row.actions.includes('navigate') && (
+                                                <ChevronRight style={{ cursor: 'pointer', marginRight: '10px' }} />
+                                            )}
+                                            {row.actions.includes('edit') && (
+                                                <Pencil style={{ cursor: 'pointer', marginRight: '10px' }} />
+                                            )}
+                                            {row.actions.includes('delete') && (
+                                                <Trash style={{ cursor: 'pointer' }} />
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </Table>
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    style={{
+                                        backgroundColor: '#28a745',
+                                        borderColor: '#28a745',
+                                        borderRadius: '20px',
+                                        padding: '5px 20px',
+                                    }}
+                                >
+                                    Add definition of dataset
+                                </Button>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            </div>
+        );
     };
 
-    if (loading) {
-        return (<div
-                style={{backgroundColor: '#ece9e2', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                Loading...
-            </div>);
-    }
+    useEffect(() => {
+        const loadData = async () => {
+            const renderedContent = await catalogService.fetchAndRender(renderContent);
+            setContent(renderedContent);
+        };
 
-    if (error) {
-        return (<div
-                style={{backgroundColor: '#ece9e2', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                Error: {error}
-            </div>);
-    }
+        loadData().then();
+    }, []);
 
-    if (!catalog) {
-        return (<div
-                style={{backgroundColor: '#ece9e2', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                No catalog data available
-            </div>);
-    }
-
-    // Flatten the catalog data into table rows
-    const tableData = flattenCatalog(catalog);
-
-    return (<div style={{backgroundColor: '#ece9e2', minHeight: '100vh'}}>
-            <Container fluid className="d-flex justify-content-center pt-5">
-                <Card className="col-8" style={{borderRadius: '10px'}}>
-                    <Card.Header
-                        style={{backgroundColor: '#ece9e2', color: '#2c3e50', fontWeight: 'bold'}}
-                        className="text-center"
-                    >
-                        Datasets catalog
-                    </Card.Header>
-                    <Card.Body>
-                        {path}
-                        <Table hover>
-                            <thead>
-                            <tr>
-                                <th>
-                                    <Form.Check type="checkbox"/>
-                                </th>
-                                <th>Catalog / Dataset name</th>
-                                <th>Applied Schema</th>
-                                <th>Last update</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {tableData.map((row) => (<tr key={row.id}>
-                                    <td>
-                                        <Form.Check type="checkbox"/>
-                                    </td>
-                                    <td>
-                      <span style={{marginLeft: `${row.level * 20}px`, marginRight: '5px'}}>
-                        {row.isCatalog ? '📁' : '📄'}
-                      </span>
-                                        {row.name}
-                                    </td>
-                                    <td>{row.schema}</td>
-                                    <td>{row.lastUpdate}</td>
-                                    <td>
-                                        {row.actions.includes('navigate') && (
-                                            <ChevronRight style={{cursor: 'pointer', marginRight: '10px'}}/>)}
-                                        {row.actions.includes('edit') && (
-                                            <Pencil style={{cursor: 'pointer', marginRight: '10px'}}/>)}
-                                        {row.actions.includes('delete') && (<Trash style={{cursor: 'pointer'}}/>)}
-                                    </td>
-                                </tr>))}
-                            </tbody>
-                        </Table>
-                        <div className="d-flex justify-content-end">
-                            <Button
-                                style={{
-                                    backgroundColor: '#28a745', borderColor: '#28a745', borderRadius: '20px', padding: '5px 20px',
-                                }}
-                            >
-                                Add definition of dataset
-                            </Button>
-                        </div>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </div>);
+    return <>{content}</>;
 };
 
 export default CatalogView;
