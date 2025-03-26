@@ -1,93 +1,92 @@
-// src/services/CatalogService.ts
-import { CatalogGateway } from './CatalogGateway';
-import { Catalog } from '../model/Catalog';
-import { Dataset } from '../model/Dataset';
-import { ReactNode } from 'react';
+import {CatalogGateway} from './CatalogGateway';
+import {Catalog} from "../model/Catalog";
 
-interface TableRow {
+export interface BreadcrumbItem {
     id: number;
-    name: string;
-    schema: string;
-    lastUpdate: string;
-    actions: string[];
-    isCatalog: boolean;
-    level: number;
+    title: string;
 }
 
-interface RenderProps {
+export interface RenderState {
     loading: boolean;
     error: string | null;
-    tableData: TableRow[];
-    hasCatalog: boolean;
+    currentCatalog: Catalog | null;
+    breadcrumb: BreadcrumbItem[];
 }
 
 export class CatalogService {
-    private catalog: Catalog | null = null;
+    private rootCatalog: Catalog | null = null;
+    private path: number[] = [];
     private loading: boolean = true;
     private error: string | null = null;
 
-    public async fetchAndRender(
-        renderCallback: (props: RenderProps) => ReactNode
-    ): Promise<ReactNode> {
+    public async fetchCatalog() {
         try {
             this.loading = true;
-            this.catalog = await CatalogGateway.fetchCatalog();
+            this.rootCatalog = await CatalogGateway.fetchCatalog();
+            this.path = this.rootCatalog ? [this.rootCatalog.id] : [];
             this.error = null;
         } catch (err) {
-            this.error = 'Failed to load catalog data';
+            this.error = 'Failed to load catalog';
         } finally {
             this.loading = false;
         }
-
-        const tableData = this.flattenCatalog();
-        return renderCallback({
-            loading: this.loading,
-            error: this.error,
-            tableData,
-            hasCatalog: this.catalog !== null,
-        });
     }
 
-    // Flatten the catalog hierarchy into table rows
-    private flattenCatalog(level: number = 0): TableRow[] {
-        const rows: TableRow[] = [];
-
-        if (!this.catalog) {
-            return rows;
+    public navigateTo(subCatalogId: number) {
+        const current = this.getCurrentCatalog();
+        if (current && current.catalogs?.some(c => c.id === subCatalogId)) {
+            this.path.push(subCatalogId);
         }
+    }
 
-        rows.push({
-            id: this.catalog.id,
-            name: this.catalog.title,
-            schema: '-',
-            lastUpdate: '21 Jan 2013',
-            actions: ['navigate'],
-            isCatalog: true,
-            level,
-        });
-
-        if (this.catalog.datasets && this.catalog.datasets.length > 0) {
-            this.catalog.datasets.forEach((dataset: Dataset) => {
-                rows.push({
-                    id: dataset.id,
-                    name: dataset.languageSpecificDatasetInfo[0]?.title || 'Untitled Dataset',
-                    schema: dataset.dataScheme?.name || 'not defined',
-                    lastUpdate: '21 Jan 2013',
-                    actions: ['edit', 'delete'],
-                    isCatalog: false,
-                    level: level + 1,
-                });
-            });
+    public goBack() {
+        if (this.path.length > 1) {
+            this.path.pop();
         }
+    }
 
-        if (this.catalog.catalogs && this.catalog.catalogs.length > 0) {
-            this.catalog.catalogs.forEach((subCatalog: Catalog) => {
-                const subService = new CatalogService();
-                subService.catalog = subCatalog;
-                rows.push(...subService.flattenCatalog(level + 1));
-            });
+    public setPath(newPath: number[]) {
+        if (this.rootCatalog && newPath[0] === this.rootCatalog.id) {
+            this.path = newPath;
         }
+    }
 
-        return rows;
+    public getCurrentCatalog(): Catalog | null {
+        if (!this.rootCatalog) return null;
+        let current: Catalog | undefined = this.rootCatalog;
+        for (const id of this.path.slice(1)) {
+            current = current.catalogs?.find((c) => c.id === id);
+            if (!current) return null;
+        }
+        return current;
+    }
+
+    public getBreadcrumb(): BreadcrumbItem[] {
+        const items: BreadcrumbItem[] = [];
+        if (!this.rootCatalog) return items;
+        let current: Catalog | undefined = this.rootCatalog;
+        for (let i = 0; i < this.path.length; i++) {
+            const id = this.path[i];
+            // add the current item to the breadcrumb
+            if (current && current.id === id) {
+                items.push({id: current.id, title: current.title});
+                // if there is a next item in the path, update current
+                if (i < this.path.length - 1) {
+                    current = current.catalogs?.find((c) => c.id === this.path[i + 1]);
+                }
+            } else {
+                break;
+            }
+        }
+        return items;
+    }
+
+    public getState(): RenderState {
+        return {
+            loading: this.loading,
+            error: this.error,
+            currentCatalog: this.getCurrentCatalog(),
+            breadcrumb: this.getBreadcrumb(),
+        } as RenderState;
     }
 }
