@@ -1,13 +1,92 @@
-// src/services/CatalogService.ts
-import { CatalogGateway } from './CatalogGateway';
-import { Catalog } from '../model/Catalog';
+import {CatalogGateway} from './CatalogGateway';
+import {Catalog} from "../model/Catalog";
+
+export interface BreadcrumbItem {
+    id: number;
+    title: string;
+}
+
+export interface RenderState {
+    loading: boolean;
+    error: string | null;
+    currentCatalog: Catalog | null;
+    breadcrumb: BreadcrumbItem[];
+}
 
 export class CatalogService {
-    public async fetchCatalog(): Promise<Catalog> {
+    private rootCatalog: Catalog | null = null;
+    private path: number[] = [];
+    private loading: boolean = true;
+    private error: string | null = null;
+
+    public async fetchCatalog() {
         try {
-            return await CatalogGateway.fetchCatalog();
+            this.loading = true;
+            this.rootCatalog = await CatalogGateway.fetchCatalog();
+            this.path = this.rootCatalog ? [this.rootCatalog.id] : [];
+            this.error = null;
         } catch (err) {
-            throw new Error('Failed to load catalog data');
+            this.error = 'Failed to load catalog';
+        } finally {
+            this.loading = false;
         }
+    }
+
+    public navigateTo(subCatalogId: number) {
+        const current = this.getCurrentCatalog();
+        if (current && current.catalogs?.some(c => c.id === subCatalogId)) {
+            this.path.push(subCatalogId);
+        }
+    }
+
+    public goBack() {
+        if (this.path.length > 1) {
+            this.path.pop();
+        }
+    }
+
+    public setPath(newPath: number[]) {
+        if (this.rootCatalog && newPath[0] === this.rootCatalog.id) {
+            this.path = newPath;
+        }
+    }
+
+    public getCurrentCatalog(): Catalog | null {
+        if (!this.rootCatalog) return null;
+        let current: Catalog | undefined = this.rootCatalog;
+        for (const id of this.path.slice(1)) {
+            current = current.catalogs?.find((c) => c.id === id);
+            if (!current) return null;
+        }
+        return current;
+    }
+
+    public getBreadcrumb(): BreadcrumbItem[] {
+        const items: BreadcrumbItem[] = [];
+        if (!this.rootCatalog) return items;
+        let current: Catalog | undefined = this.rootCatalog;
+        for (let i = 0; i < this.path.length; i++) {
+            const id = this.path[i];
+            // add the current item to the breadcrumb
+            if (current && current.id === id) {
+                items.push({id: current.id, title: current.title});
+                // if there is a next item in the path, update current
+                if (i < this.path.length - 1) {
+                    current = current.catalogs?.find((c) => c.id === this.path[i + 1]);
+                }
+            } else {
+                break;
+            }
+        }
+        return items;
+    }
+
+    public getState(): RenderState {
+        return {
+            loading: this.loading,
+            error: this.error,
+            currentCatalog: this.getCurrentCatalog(),
+            breadcrumb: this.getBreadcrumb(),
+        } as RenderState;
     }
 }
