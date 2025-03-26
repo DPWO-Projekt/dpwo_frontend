@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState, ReactNode } from 'react';
 import { Button, Card, Container, Form, Table } from 'react-bootstrap';
 import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
 import {CatalogService} from "../../service/CatalogService";
+import { useNavigate } from 'react-router';
 
 interface CatalogProps {}
 
@@ -27,6 +28,7 @@ const CatalogView: FC<CatalogProps> = () => {
     const [content, setContent] = useState<ReactNode>(null);
     const catalogService = new CatalogService();
     const path = '/catalog';
+    const navigate = useNavigate();
 
     const renderContent = ({ loading, error, tableData, hasCatalog }: RenderProps): ReactNode => {
         if (loading) {
@@ -138,6 +140,7 @@ const CatalogView: FC<CatalogProps> = () => {
                                         borderRadius: '20px',
                                         padding: '5px 20px',
                                     }}
+                                    onClick={() => navigate("/dataset-add")}
                                 >
                                     Add definition of dataset
                                 </Button>

@@ -9,6 +9,7 @@ const Home: FC<HomeProps> = () => (
     <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
         <Link to={"/catalog"}>Catalog</Link>
         <Link to={"/dataset-edit"}>DatasetEdit</Link>
+        <Link to={"/dataset-add"}>DatasetAdd</Link>
     </div>
 );
 

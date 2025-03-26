@@ -1,0 +1,54 @@
+.container {
+  background-color: #F6F4EC;
+  height: 100dvh;
+  margin: auto;
+  padding: 50px;
+}
+
+.header {
+  color: #004A6C;
+  font-weight: bold;
+  font-size: 33px;
+  margin: auto;
+  width: fit-content;
+}
+
+.inputGroup {
+  width: 70%;
+  padding-bottom: 16px;
+}
+
+.inputLabel {
+  width: 30%;
+  border-radius: 50rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.inputValue {
+  width: 70%;
+  border-radius: 50rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.formTextArea {
+  width: 70%;
+}
+
+.editButton {
+  border-radius: 100rem;
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  margin: auto;
+  display: block;
+  margin-top: 24px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
