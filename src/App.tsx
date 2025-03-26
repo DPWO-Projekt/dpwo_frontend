@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router";
 import Home from "./components/Home/Home";
 import AddDataSet from './components/AddDataSet/AddDataSet';
 import CatalogView from "./components/Catalog/CatalogView";
+import DatasetEdit from './components/DatasetEdit/DatasetEdit';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/adddataset" element={<AddDataSet/>}/>
                 <Route path="/catalog" element={<CatalogView/>}/>
+                <Route path="/dataset-edit" element={<DatasetEdit/>}/>
             </Routes>
         </div>
     );
