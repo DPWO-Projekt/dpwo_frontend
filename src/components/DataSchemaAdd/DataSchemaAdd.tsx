@@ -1,13 +1,16 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
-import styles from './DatasetEdit.module.css';
+import styles from './DataSchemaAdd.module.css';
 import {Link, useLocation} from 'react-router';
-import { v4 as uuidv4 } from 'uuid';
 
+export interface Property {
+  type: string;
+  name: string;
+}
 
 export interface InitialDatasetData {
   title: string;
-  properties: Map<string, string>
+  properties: [Property]
 }
 
 interface DataSchemaAddProps {
@@ -20,50 +23,32 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
   onSaveError,
 }) => {
 
-  const [datasetTitle, setdatasetTitle] = useState(init?.title ?? '');
-
-  const [languageDescriptions, setLanguageDescriptions] = useState(new Map<string, string>);
-
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleAddDescription = () => {
-    const selectedLanguages = new Set(languageDescriptions.map(desc => desc.language));
-    const nextAvailableLanguage = languageList.find(lang => !selectedLanguages.has(lang));
-
-    if (nextAvailableLanguage) {
-      setLanguageDescriptions([
-        ...languageDescriptions,
-        {
-          id: uuidv4(),
-          title: '',
-          keywords: '',
-          language: nextAvailableLanguage,
-          description: '',
-        },
-      ]);
-    } else {
-      alert("All available languages have been added.");
+  const [datasetTitle, setdatasetTitle] = useState('');
+  const [schemaProperties, setSchemaProperties] = useState([
+    {
+      type: '',
+      name: ''
     }
+  ]);
+
+  const handleAddDescription = () => {
+    setSchemaProperties([
+      ...schemaProperties,
+      {
+        type: '',
+        name: ''
+      },
+    ]);
   };
 
   const handleRemoveDescription = (idToRemove: string) => {
-    if (languageDescriptions.length <= 1) {
+    if (schemaProperties.length <= 1) {
       alert('You must have at least one language description.');
       return;
     }
-    setLanguageDescriptions(languageDescriptions.filter((desc) => desc.id !== idToRemove));
-  };
-
-  type DescriptionField = keyof (InitialLanguageDescription & { id: string });
-  const handleDescriptionChange = (idToUpdate: string, field: DescriptionField, value: string) => {
-    setLanguageDescriptions(
-      languageDescriptions.map((desc) => {
-        if (desc.id === idToUpdate) {
-          return { ...desc, [field]: value };
-        }
-        return desc;
-      })
-    );
+    setSchemaProperties(schemaProperties.filter((prop) => prop.name !== idToRemove));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,7 +56,7 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
     setIsSaving(true);
 
     const payload = {
-      title: title,
+      title: datasetTitle,
     };
 
     console.log('Submitting Payload for Edit:', JSON.stringify(payload, null, 2));
@@ -117,43 +102,27 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
               className={`${styles.inputValue}`}
               placeholder="Theme"
               aria-label="Theme"
-              value={title}
-              onChange={(e) => setDatasetTheme(e.target.value)}
+              value={datasetTitle}
+              onChange={(e) => setdatasetTitle(e.target.value)}
               required
-            />
-          </InputGroup>
-          <InputGroup className={`${styles.inputGroup} mx-auto`}>
-            <InputGroup.Text className={`${styles.inputLabel}`}>Dataset URI</InputGroup.Text>
-            <Form.Control
-              type="url"
-              className={`${styles.inputValue}`}
-              placeholder="Dataset URI (optional)"
-              aria-label="Dataset URI"
-              value={datasetUri}
-              onChange={(e) => setDatasetUri(e.target.value)}
             />
           </InputGroup>
         </div>
 
-        {languageDescriptions.map((descData, index) => {
-          const availableLanguages = languageList.filter(lang =>
-            !selectedLanguagesSet.has(lang) || lang === descData.language
-          );
-
+        {schemaProperties.map((descData, index) => {
           return (
-            <div key={descData.id} className={styles.section}>
+            <div key={descData.name} className={styles.section}>
               <label className={styles.inputGroupLabel}>
                 Language specific dataset description #{index + 1}:
               </label>
 
               <InputGroup className={`${styles.inputGroup} mx-auto`}>
-                <InputGroup.Text className={`${styles.inputLabel}`}>Dataset Title</InputGroup.Text>
+                <InputGroup.Text className={`${styles.inputLabel}`}>Property type</InputGroup.Text>
                 <Form.Control
                   className={`${styles.inputValue}`}
-                  placeholder="Dataset Title"
-                  aria-label="Dataset Title"
-                  value={descData.title}
-                  onChange={(e) => handleDescriptionChange(descData.id, 'title', e.target.value)}
+                  placeholder="string"
+                  aria-label="Property type"
+                  value={descData.type}
                   required
                 />
               </InputGroup>
@@ -161,17 +130,17 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
                 <InputGroup.Text className={`${styles.inputLabel}`}>Keywords</InputGroup.Text>
                 <Form.Control
                   className={`${styles.inputValue}`}
-                  placeholder="Keywords (comma separated)"
-                  aria-label="Keywords"
-                  value={descData.keywords}
-                  onChange={(e) => handleDescriptionChange(descData.id, 'keywords', e.target.value)}
+                  placeholder="Property name"
+                  aria-label="Property type"
+                  value={descData.name}
+                  //onChange={(e) => handleDescriptionChange(descData.id, 'keywords', e.target.value)}
                 />
               </InputGroup>
-              {languageDescriptions.length > 1 && (
+              {schemaProperties.length > 1 && (
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => handleRemoveDescription(descData.id)}
+                  onClick={() => handleRemoveDescription(descData.name)}
                   className={styles.button}
                 >
                   Remove
@@ -186,9 +155,9 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
             variant="secondary"
             onClick={handleAddDescription}
             className={styles.button}
-            disabled={languageDescriptions.length >= languageList.length || isSaving}
+            disabled={isSaving}
           >
-            + Additional language
+            + Additional property
           </Button>
 
           <Button
