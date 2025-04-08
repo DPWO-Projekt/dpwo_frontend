@@ -6,6 +6,6 @@ export interface Dataset {
     id: number;
     theme: string;
     vCard?: VCard[];
-    languageSpecificDatasetInfo: LanguageSpecificDatasetInfo[];
+    languageSpecificDatasetInfos: LanguageSpecificDatasetInfo[];
     dataScheme: DataScheme;
 }
