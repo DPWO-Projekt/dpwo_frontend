@@ -112,7 +112,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       datasetInfo: languageDescriptions.map(({ id, ...rest }) => rest),
     };
 
-    console.log('Submitting Payload for Edit:', JSON.stringify(payload, null, 2));
+    console.log('Submitting Payload for Adding:', JSON.stringify(payload, null, 2));
 
     try {
       const response = await fetch(`http://localhost:8080/api/dataset`, {
@@ -321,7 +321,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
             type="submit"
             disabled={isSaving}
           >
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? 'Saving...' : 'Save new dataset'}
           </Button>
         </div>
       </Form>
