@@ -18,11 +18,16 @@ export class CatalogService {
     private path: number[] = [];
     private loading: boolean = true;
     private error: string | null = null;
+    private catalogGateway: CatalogGateway;
+
+    constructor() {
+        this.catalogGateway = new CatalogGateway();
+    }
 
     public async fetchCatalog() {
         try {
             this.loading = true;
-            this.rootCatalog = await CatalogGateway.fetchCatalog();
+            this.rootCatalog = await this.catalogGateway.fetchCatalog();
             this.path = this.rootCatalog ? [this.rootCatalog.id] : [];
             this.error = null;
         } catch (err) {

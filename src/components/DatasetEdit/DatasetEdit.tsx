@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from './DatasetEdit.module.css';
-import { Link } from 'react-router';
+import {Link, useLocation} from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 interface InitialLanguageDescription {
@@ -38,19 +38,22 @@ const DatasetEdit: FC<DatasetEditProps> = ({
   onSaveError,
 }) => {
 
-  const [schemaId, setSchemaId] = useState(initialData?.schemaId ?? '');
-  const [datasetTheme, setDatasetTheme] = useState(initialData?.theme ?? '');
-  const [datasetUri, setDatasetUri] = useState(initialData?.uri ?? '');
+  const location = useLocation();
+  const init: InitialDatasetData = location.state?.initialData || {};
 
-  const [authorNames, setAuthorNames] = useState(initialData?.authors?.names ?? '');
-  const [authorWebsites, setAuthorWebsites] = useState(initialData?.authors?.websites ?? '');
-  const [authorOrganizations, setAuthorOrganizations] = useState(initialData?.authors?.organizations ?? '');
-  const [authorEmails, setAuthorEmails] = useState(initialData?.authors?.emails ?? '');
+  const [schemaId, setSchemaId] = useState(init?.schemaId ?? '');
+  const [datasetTheme, setDatasetTheme] = useState(init?.theme ?? '');
+  const [datasetUri, setDatasetUri] = useState(init?.uri ?? '');
+
+  const [authorNames, setAuthorNames] = useState(init?.authors?.names ?? '');
+  const [authorWebsites, setAuthorWebsites] = useState(init?.authors?.websites ?? '');
+  const [authorOrganizations, setAuthorOrganizations] = useState(init?.authors?.organizations ?? '');
+  const [authorEmails, setAuthorEmails] = useState(init?.authors?.emails ?? '');
 
   const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
 
   const [languageDescriptions, setLanguageDescriptions] = useState(
-    initialData?.descriptions?.map(desc => ({
+      init?.descriptions?.map(desc => ({
       ...desc,
       id: uuidv4(),
     })) ?? [
@@ -126,7 +129,7 @@ const DatasetEdit: FC<DatasetEditProps> = ({
     console.log('Submitting Payload for Edit:', JSON.stringify(payload, null, 2));
 
     try {
-      const response = await fetch(`/api/dataset/edit/${initialData?.schemaId}`, {
+      const response = await fetch(`/api/dataset/edit/${init?.schemaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

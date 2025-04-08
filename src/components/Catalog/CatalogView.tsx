@@ -3,6 +3,7 @@ import {Button, Card, Container, Form, Table} from 'react-bootstrap';
 import {ChevronRight, Pencil, Trash} from 'react-bootstrap-icons';
 import {CatalogService, RenderState} from "../../service/CatalogService";
 import { useNavigate } from 'react-router';
+import {Catalog} from "../../model/Catalog";
 
 interface CatalogProps {
 }
@@ -158,7 +159,7 @@ const CatalogView: FC<CatalogProps> = () => {
                             <td>
                                             <span>
                                                 📄{' '}
-                                                {dataset.languageSpecificDatasetInfo[0]?.title || 'Untitled Dataset'}
+                                                {dataset.languageSpecificDatasetInfos[0]?.title || 'Untitled Dataset'}
                                             </span>
                             </td>
                             <td>{dataset.dataScheme?.name || 'not defined'}</td>
@@ -166,7 +167,7 @@ const CatalogView: FC<CatalogProps> = () => {
                             <td>
                                 <Pencil
                                     style={{cursor: 'pointer', marginRight: '10px'}}
-                                />
+                                    onClick={() => navigate(`/dataset-edit`, { state: { initialData: { schemaId: dataset.id } } })}                                />
                                 <Trash style={{cursor: 'pointer'}}/>
                             </td>
                         </tr>))}
