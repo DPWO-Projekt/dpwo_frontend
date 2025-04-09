@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from './DatasetAdd.module.css';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 
@@ -41,7 +41,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   const [schemaId, setSchemaId] = useState('');
   const [datasetTheme, setDatasetTheme] = useState('');
   const [datasetUri, setDatasetUri] = useState('');
-
+  const navigate = useNavigate();
+  
   const [vCard, setVCard] = useState({
     authorNames: [''],
     relatedWebsites: [''],
@@ -131,14 +132,17 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       if (response.ok) {
         toast('Dataset added successfully!');
         onSaveSuccess?.();
+        navigate("/catalog");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
         console.error('Failed Response:', response.status, errorData);
         onSaveError?.(errorData);
+        toast('Unexpected Error!');
       }
     } catch (error) {
       console.error('Network or other error:', error);
       onSaveError?.(error);
+      toast('Network error!');
     } finally {
       setIsSaving(false);
     }

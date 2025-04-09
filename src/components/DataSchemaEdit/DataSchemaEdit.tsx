@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import styles from './DataSchemaEdit.module.css';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, Send } from 'react-bootstrap-icons'
+import { toast } from 'react-toastify';
 
 export interface Property {
   type: string;
@@ -26,7 +27,7 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = ({
 }) => {
   const availableDataTypes = ["text", "decimal", "boolean", "date", "link"]
   const [isSaving, setIsSaving] = useState(false);
-
+  const navigate = useNavigate();
   const [datasetName, setdatasetName] = useState('');
   const [schemaProperties, setSchemaProperties] = useState([
     {
@@ -85,8 +86,8 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = ({
     console.log('Submitting Payload for Add:', JSON.stringify(payload));
 
     try {
-      const response = await fetch(`http://localhost:8080/api/dataset`, {
-        method: 'POST',
+      const response = await fetch(`http://localhost:8080/api/dataschema`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -96,14 +97,18 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = ({
       if (response.ok) {
         console.log('Dataset updated successfully!');
         onSaveSuccess?.();
+        toast('Dataschema added successfully!');
+        navigate("/catalog");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
         console.error('Failed Response:', response.status, errorData);
         onSaveError?.(errorData);
+        toast('Unexpected error.');
       }
     } catch (error) {
       console.error('Network or other error:', error);
       onSaveError?.(error);
+      toast('Network error.');
     } finally {
       setIsSaving(false);
     }
