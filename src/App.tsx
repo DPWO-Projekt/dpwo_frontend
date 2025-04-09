@@ -5,6 +5,7 @@ import Home from "./components/Home/Home";
 import CatalogView from "./components/Catalog/CatalogView";
 import DatasetEdit from './components/DatasetEdit/DatasetEdit';
 import DatasetAdd from './components/DatasetAdd/DatasetAdd';
+import DataSchemaAdd from './components/DataSchemaAdd/DataSchemaAdd';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/dataset-add" element={<DatasetAdd/>}/>
+                <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
                 <Route path="/catalog" element={<CatalogView/>}/>
                 <Route path="/dataset-edit" element={<DatasetEdit/>}/>
             </Routes>

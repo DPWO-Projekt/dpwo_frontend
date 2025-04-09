@@ -10,6 +10,7 @@ const Home: FC<HomeProps> = () => (
         <Link to={"/catalog"}>Catalog</Link>
         <Link to={"/dataset-edit"}>DatasetEdit</Link>
         <Link to={"/dataset-add"}>DatasetAdd</Link>
+        <Link to={"/dataschema-add"}>DataSchemaAdd</Link>
     </div>
 );
 
