@@ -159,7 +159,7 @@ const CatalogView: FC<CatalogProps> = () => {
                             <td>
                                             <span>
                                                 📄{' '}
-                                                {dataset.languageSpecificDatasetInfo[0]?.title || 'Untitled Dataset'}
+                                                {dataset.theme || 'Untitled Dataset'}
                                             </span>
                             </td>
                             <td>{dataset.dataScheme?.name || 'not defined'}</td>
