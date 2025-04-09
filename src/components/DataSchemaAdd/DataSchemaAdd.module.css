@@ -18,17 +18,23 @@
 }
 
 .inputLabel {
-  width: 30% !important;
+  width: 40% !important;
   border-radius: 50rem !important;
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
 
 .inputValue {
-  width: 70% !important;
+  width: 60% !important;
   border-radius: 50rem !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+  padding: 10px !important;
+}
+
+.inputValueFull {
+  width: 70% !important;
+  border-radius: 50rem !important;
   padding: 10px !important;
 }
 
@@ -42,6 +48,19 @@
   border: none !important;
   color: white !important;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2) !important;
+  margin: auto !important;
+  display: block !important;
+  margin-top: 24px !important;
+  font-size: large !important;
+}
+
+.addPropButton {
+  border-radius: 50rem !important;
+  width: 60% !important;
+  padding: 10px !important;
+  background-color: #F6F4EC;
+  border: dotted !important;
+  color: #004A6C !important;
   margin: auto !important;
   display: block !important;
   margin-top: 24px !important;

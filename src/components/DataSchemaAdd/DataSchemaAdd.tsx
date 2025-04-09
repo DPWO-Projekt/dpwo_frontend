@@ -1,7 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
-import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
+import React, { FC, useState } from 'react';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import styles from './DataSchemaAdd.module.css';
-import {Link, useLocation} from 'react-router';
+import {Link} from 'react-router';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Property {
   type: string;
@@ -9,8 +10,8 @@ export interface Property {
 }
 
 export interface InitialDatasetData {
-  title: string;
-  properties: [Property]
+  name: string;
+  properties: []
 }
 
 interface DataSchemaAddProps {
@@ -22,44 +23,65 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
   onSaveSuccess,
   onSaveError,
 }) => {
-
+  const availableDataTypes = ["text", "decimal", "boolean", "date", "link"]
   const [isSaving, setIsSaving] = useState(false);
 
-  const [datasetTitle, setdatasetTitle] = useState('');
+  const [datasetName, setdatasetName] = useState('');
   const [schemaProperties, setSchemaProperties] = useState([
     {
-      type: '',
-      name: ''
+      type: availableDataTypes[0],
+      name: '',
+      id: uuidv4()
     }
   ]);
 
-  const handleAddDescription = () => {
+  const handleAddProperty = () => {
     setSchemaProperties([
       ...schemaProperties,
       {
-        type: '',
-        name: ''
+        type: availableDataTypes[0],
+        name: '',
+        id: uuidv4()
       },
     ]);
+    console.log(schemaProperties);
   };
 
-  const handleRemoveDescription = (idToRemove: string) => {
+  const handleRemoveProperty = (idToRemove: string) => {
     if (schemaProperties.length <= 1) {
-      alert('You must have at least one language description.');
+      alert('You must have at least one property.');
       return;
     }
-    setSchemaProperties(schemaProperties.filter((prop) => prop.name !== idToRemove));
+    setSchemaProperties(schemaProperties.filter((prop) => prop.id !== idToRemove));
   };
+
+  type DescriptionField = keyof (Property & { id: string });
+  const handlePropChange = (idToUpdate: string, field: DescriptionField, value: string) => {
+    setSchemaProperties(
+      schemaProperties.map((prop) => {
+        if (prop.id === idToUpdate) {
+          return { ...prop, [field]: value };
+        }
+        return prop;
+      })
+    );
+  };
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
 
+    var propMap: any = {};
+    schemaProperties.forEach(prop => {
+      propMap[prop.name] = prop.type;
+    });
     const payload = {
-      title: datasetTitle,
+      name: datasetName,
+      properties: propMap
     };
-
-    console.log('Submitting Payload for Edit:', JSON.stringify(payload, null, 2));
+    console.log('Submitting Payload for Add:', JSON.stringify(payload));
 
     try {
       const response = await fetch(`http://localhost:8080/api/dataset`, {
@@ -90,7 +112,6 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
     <div className={styles.container}>
       <div className={styles.nav}>
         <Link to={'/'}>Home</Link>
-        <CloseButton />
       </div>
 
       <div className={styles.header}>Add data schema</div>
@@ -99,51 +120,47 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
         <div className={styles.section}>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <Form.Control
-              className={`${styles.inputValue}`}
+              className={`${styles.inputValueFull}`}
               placeholder="Theme"
               aria-label="Theme"
-              value={datasetTitle}
-              onChange={(e) => setdatasetTitle(e.target.value)}
+              value={datasetName}
+              onChange={(e) => setdatasetName(e.target.value)}
               required
             />
           </InputGroup>
         </div>
 
-        {schemaProperties.map((descData, index) => {
+        {schemaProperties.map((propData, index) => {
           return (
-            <div key={descData.name} className={styles.section}>
-              <label className={styles.inputGroupLabel}>
-                Language specific dataset description #{index + 1}:
-              </label>
-
+            <div key={propData.id} className={styles.section}>
               <InputGroup className={`${styles.inputGroup} mx-auto`}>
-                <InputGroup.Text className={`${styles.inputLabel}`}>Property type</InputGroup.Text>
                 <Form.Control
-                  className={`${styles.inputValue}`}
-                  placeholder="string"
-                  aria-label="Property type"
-                  value={descData.type}
-                  required
-                />
-              </InputGroup>
-              <InputGroup className={`${styles.inputGroup} mx-auto`}>
-                <InputGroup.Text className={`${styles.inputLabel}`}>Keywords</InputGroup.Text>
+                  as="select"
+                  value={propData.type}
+                  className={`${styles.inputLabel}`}
+                  onChange={(e) => handlePropChange(propData.id, 'type', e.target.value)}
+                >
+                  {availableDataTypes.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </Form.Control>
                 <Form.Control
                   className={`${styles.inputValue}`}
                   placeholder="Property name"
-                  aria-label="Property type"
-                  value={descData.name}
-                  //onChange={(e) => handleDescriptionChange(descData.id, 'keywords', e.target.value)}
+                  aria-label="Property name"
+                  value={propData.name}
+                  onChange={(e) => handlePropChange(propData.id, 'name', e.target.value)}
+                  required
                 />
               </InputGroup>
-              {schemaProperties.length > 1 && (
+              {index > 0 && (
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => handleRemoveDescription(descData.name)}
+                  onClick={() => handleRemoveProperty(propData.id)}
                   className={styles.button}
                 >
-                  Remove
+                  Remove property
                 </Button>
               )}
             </div>
@@ -152,12 +169,12 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
 
         <div className={styles.buttonContainer}>
           <Button
-            variant="secondary"
-            onClick={handleAddDescription}
-            className={styles.button}
+            variant="outline-secondary"
+            onClick={handleAddProperty}
+            className={`${styles.addPropButton}`}
             disabled={isSaving}
           >
-            + Additional property
+            Add property
           </Button>
 
           <Button
@@ -166,7 +183,7 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
             type="submit"
             disabled={isSaving}
           >
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? 'Saving...' : 'Add'}
           </Button>
         </div>
       </Form>
