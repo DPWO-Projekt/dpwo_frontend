@@ -3,6 +3,7 @@ import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from './DatasetEdit.module.css';
 import {Link, useLocation} from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 interface InitialLanguageDescription {
   title: string;
@@ -117,35 +118,6 @@ const DatasetEdit: FC<DatasetEditProps> = ({
     e.preventDefault();
     setIsSaving(true);
 
-    // {
-//   "id": "67f6a17e2bc77c02b70ca880",
-//   "uri": "https://www.cav.cm",
-//   "theme": "Recusandae Amet cu",
-//   "schemaId": "67f6a17e2bc77c02b70ca880",
-//   "languageSpecificDatasetInfo": [
-//       {
-//           "title": "Numquam adipisci rep",
-//           "description": "Voluptate eius in pe",
-//           "keyword": null,
-//           "langCode": null
-//       }
-//   ],
-//   "vCard": {
-//       "authorNames": [
-//           "Marvin Fitzpatrick"
-//       ],
-//       "relatedWebsites": [
-//           "https://www.votebeveweh.in"
-//       ],
-//       "orgs": [
-//           "Aguirre Phelps Traders"
-//       ],
-//       "contactEmails": [
-//           "melyta@mailinator.com"
-//       ]
-//   }
-// }
-
     const payload = {
       schemaId: schemaId,
       theme: datasetTheme,
@@ -171,7 +143,7 @@ const DatasetEdit: FC<DatasetEditProps> = ({
       });
 
       if (response.ok) {
-        console.log('Dataset updated successfully!');
+        toast('Dataset updated successfully!');
         onSaveSuccess?.();
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));

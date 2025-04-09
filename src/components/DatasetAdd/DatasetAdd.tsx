@@ -3,6 +3,7 @@ import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from './DatasetAdd.module.css';
 import { Link } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 interface InitialLanguageDescription {
   title: string;
@@ -128,7 +129,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       });
 
       if (response.ok) {
-        console.log('Dataset updated successfully!');
+        toast('Dataset added successfully!');
         onSaveSuccess?.();
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
