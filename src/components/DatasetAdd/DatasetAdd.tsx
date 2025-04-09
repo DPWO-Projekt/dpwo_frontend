@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface InitialLanguageDescription {
   title: string;
-  keywords: [];
-  languageCode: string;
+  keyword: string[];
+  langCode: string;
   description: string;
 }
 
@@ -41,10 +41,12 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   const [datasetTheme, setDatasetTheme] = useState('');
   const [datasetUri, setDatasetUri] = useState('');
 
-  const [authorNames, setAuthorNames] = useState('');
-  const [authorWebsites, setAuthorWebsites] = useState('');
-  const [authorOrganizations, setAuthorOrganizations] = useState('');
-  const [authorEmails, setAuthorEmails] = useState('');
+  const [vCard, setVCard] = useState({
+    authorNames: [''],
+    relatedWebsites: [''],
+    orgs: [''],
+    contactEmails: [''],
+  });
 
   const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
 
@@ -53,8 +55,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       {
         id: uuidv4(),
         title: '',
-        keywords: ["string"],
-        languageCode: languageList[0] || '',
+        keyword: ['string'],
+        langCode: languageList[0] || '',
         description: '',
       },
     ]
@@ -63,7 +65,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   const [isSaving, setIsSaving] = useState(false);
 
   const handleAddDescription = () => {
-    const selectedLanguages = new Set(languageDescriptions.map(desc => desc.languageCode));
+    const selectedLanguages = new Set(languageDescriptions.map(desc => desc.langCode));
     const nextAvailableLanguage = languageList.find(lang => !selectedLanguages.has(lang));
 
     if (nextAvailableLanguage) {
@@ -72,8 +74,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
         {
           id: uuidv4(),
           title: '',
-          keywords: [],
-          languageCode: nextAvailableLanguage,
+          keyword: [],
+          langCode: nextAvailableLanguage,
           description: '',
         },
       ]);
@@ -91,7 +93,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   };
 
   type DescriptionField = keyof (InitialLanguageDescription & { id: string });
-  const handleDescriptionChange = (idToUpdate: string, field: DescriptionField, value: string) => {
+  const handleDescriptionChange = (idToUpdate: string, field: DescriptionField, value: string | string[]) => {
     setLanguageDescriptions(
       languageDescriptions.map((desc) => {
         if (desc.id === idToUpdate) {
@@ -107,19 +109,19 @@ const DatasetAdd: FC<DatasetEditProps> = ({
     setIsSaving(true);
 
     const payload = {
+      uri: datasetUri,
       schemaId: "schemaId",
       theme: datasetTheme,
-      datasetInfo: languageDescriptions.map(({ id, ...rest }) => rest),
+      languageSpecificDatasetInfo: languageDescriptions.map(({ id, ...rest }) => rest),
+      vCard: vCard
     };
 
     console.log('Submitting Payload for Adding:', JSON.stringify(payload, null, 2));
 
     try {
-      const response = await fetch(`http://localhost:8080/api/dataset`, {
+      const response = await fetch(`/api/datasetdefinition`, {
         method: 'POST',
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload),
@@ -141,7 +143,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
     }
   };
 
-  const selectedLanguagesSet = new Set(languageDescriptions.map(desc => desc.languageCode));
+  const selectedLanguagesSet = new Set(languageDescriptions.map(desc => desc.langCode));
 
   return (
     <div className={styles.container}>
@@ -156,18 +158,6 @@ const DatasetAdd: FC<DatasetEditProps> = ({
         <div className={styles.section}>
           <label className={styles.inputGroupLabel}>General dataset information:</label>
 
-          <InputGroup className={`${styles.inputGroup} mx-auto`}>
-            <InputGroup.Text className={`${styles.inputLabel}`}>Dataset Identifier</InputGroup.Text>
-            <Form.Control
-              className={`${styles.inputValue}`}
-              placeholder="Unique dataset identifier"
-              aria-label="Unique dataset identifier"
-              value={schemaId}
-              onChange={(e) => setSchemaId(e.target.value)}
-              required
-              readOnly={true}
-            />
-          </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Dataset Theme</InputGroup.Text>
             <Form.Control
@@ -200,8 +190,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
               className={`${styles.inputValue}`}
               placeholder="Author Names"
               aria-label="Author names"
-              value={authorNames}
-              onChange={(e) => setAuthorNames(e.target.value)}
+              value={vCard.authorNames}
+              onChange={(e) => setVCard({ ...vCard, authorNames: e.target.value.split(',') })}
             />
           </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
@@ -210,8 +200,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
               className={`${styles.inputValue}`}
               placeholder="Websites"
               aria-label="Websites"
-              value={authorWebsites}
-              onChange={(e) => setAuthorWebsites(e.target.value)}
+              value={vCard.relatedWebsites}
+              onChange={(e) => setVCard({ ...vCard, relatedWebsites: e.target.value.split(',') })}
             />
           </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
@@ -220,8 +210,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
               className={`${styles.inputValue}`}
               placeholder="Organizations"
               aria-label="Organizations"
-              value={authorOrganizations}
-              onChange={(e) => setAuthorOrganizations(e.target.value)}
+              value={vCard.orgs}
+              onChange={(e) => setVCard({ ...vCard, orgs: e.target.value.split(',') })}
             />
           </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
@@ -230,15 +220,15 @@ const DatasetAdd: FC<DatasetEditProps> = ({
               className={`${styles.inputValue}`}
               placeholder="E-mails"
               aria-label="E-mails"
-              value={authorEmails}
-              onChange={(e) => setAuthorEmails(e.target.value)}
+              value={vCard.contactEmails}
+              onChange={(e) => setVCard({ ...vCard, contactEmails: e.target.value.split(',') })}
             />
           </InputGroup>
         </div>
 
         {languageDescriptions.map((descData, index) => {
           const availableLanguages = languageList.filter(lang =>
-            !selectedLanguagesSet.has(lang) || lang === descData.languageCode
+            !selectedLanguagesSet.has(lang) || lang === descData.langCode
           );
 
           return (
@@ -264,17 +254,17 @@ const DatasetAdd: FC<DatasetEditProps> = ({
                   className={`${styles.inputValue}`}
                   placeholder="Keywords (comma separated)"
                   aria-label="Keywords"
-                  value={descData.keywords}
-                  onChange={(e) => handleDescriptionChange(descData.id, 'keywords', e.target.value)}
+                  value={descData.keyword}
+                  onChange={(e) => handleDescriptionChange(descData.id, 'keyword', e.target.value.split(',').map(keyword => keyword.trim()))}
                 />
               </InputGroup>
               <InputGroup className={`${styles.inputGroup} mx-auto`}>
                 <InputGroup.Text className={`${styles.inputLabel}`}>Language</InputGroup.Text>
                 <Form.Control
                   as="select"
-                  value={descData.languageCode}
+                  value={descData.langCode}
                   className={`${styles.inputValue}`}
-                  onChange={(e) => handleDescriptionChange(descData.id, 'languageCode', e.target.value)}
+                  onChange={(e) => handleDescriptionChange(descData.id, 'langCode', e.target.value)}
                 >
                   {availableLanguages.map((lang) => (
                     <option key={lang} value={lang}>{lang}</option>

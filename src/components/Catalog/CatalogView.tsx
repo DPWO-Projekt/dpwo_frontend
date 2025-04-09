@@ -159,7 +159,7 @@ const CatalogView: FC<CatalogProps> = () => {
                             <td>
                                             <span>
                                                 📄{' '}
-                                                {dataset.languageSpecificDatasetInfos[0]?.title || 'Untitled Dataset'}
+                                                {dataset.languageSpecificDatasetInfo[0]?.title || 'Untitled Dataset'}
                                             </span>
                             </td>
                             <td>{dataset.dataScheme?.name || 'not defined'}</td>
@@ -167,7 +167,8 @@ const CatalogView: FC<CatalogProps> = () => {
                             <td>
                                 <Pencil
                                     style={{cursor: 'pointer', marginRight: '10px'}}
-                                    onClick={() => navigate(`/dataset-edit`, { state: { initialData: { schemaId: dataset.id } } })}                                />
+                                    onClick={() => navigate(`/dataset-edit`, { state: { initialData: { ...dataset, schemaId: dataset.id } } })}
+                                />
                                 <Trash style={{cursor: 'pointer'}}/>
                             </td>
                         </tr>))}

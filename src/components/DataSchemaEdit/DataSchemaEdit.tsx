@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
-import styles from './DataSchemaAdd.module.css';
+import styles from './DataSchemaEdit.module.css';
 import { Link } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, Send } from 'react-bootstrap-icons'
@@ -15,12 +15,12 @@ export interface InitialDatasetData {
   properties: []
 }
 
-interface DataSchemaAddProps {
+interface DataSchemaEditProps {
   onSaveSuccess?: () => void;
   onSaveError?: (error: any) => void;
 }
 
-const DataSchemaAdd: FC<DataSchemaAddProps> = ({
+const DataSchemaEdit: FC<DataSchemaEditProps> = ({
   onSaveSuccess,
   onSaveError,
 }) => {
@@ -115,7 +115,7 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
         <Link to={'/'}>Home</Link>
       </div>
 
-      <div className={styles.header}>Add data schema</div>
+      <div className={styles.header}>Edit data schema</div>
 
       <Form onSubmit={handleSubmit}>
         <div className={styles.section}>
@@ -191,4 +191,4 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
   );
 };
 
-export default DataSchemaAdd;
+export default DataSchemaEdit;

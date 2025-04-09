@@ -2,7 +2,7 @@ import {Catalog} from "../model/Catalog";
 
 export class CatalogGateway {
     public async fetchCatalog(): Promise<Catalog> {
-        const response = await fetch('/api/dataset');
+        const response = await fetch('/api/datasetdefinition');
         if (!response.ok) {
             throw new Error('Failed to fetch catalog');
         }
