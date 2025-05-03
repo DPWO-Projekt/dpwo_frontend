@@ -1,5 +1,5 @@
-import {CatalogGateway} from './CatalogGateway';
-import {Catalog} from "../model/Catalog";
+import {CatalogGateway} from "./CatalogGateway";
+import {Catalog} from "../types/Catalog";
 
 export interface BreadcrumbItem {
     id: number;

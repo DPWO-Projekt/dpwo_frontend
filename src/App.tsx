@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router";
-import Home from "./components/Home/Home";
-import CatalogView from "./components/Catalog/CatalogView";
-import DatasetEdit from './components/DatasetEdit/DatasetEdit';
-import DatasetAdd from './components/DatasetAdd/DatasetAdd';
-import DataSchemaAdd from './components/DataSchemaAdd/DataSchemaAdd';
-import DataSchemaEdit from './components/DataSchemaEdit/DataSchemaEdit';
+import Home from "./home/components/Home";
+import CatalogView from './dataset/components/Catalog/CatalogView';
+import DatasetEdit from './dataset/components/DatasetEdit/DatasetEdit';
+import DatasetAdd from './dataset/components/DatasetAdd/DatasetAdd';
+import DataSchemaAdd from './dataschema/components/DataSchemaAdd/DataSchemaAdd';
+import DataSchemaEdit from './dataschema/components/DataSchemaEdit/DataSchemaEdit';
 import { ToastContainer } from 'react-toastify';
-import DataSchemaCatalog from './components/DataSchemaCatalog/DataSchemaCatalog';
+import DataSchemaCatalog from './dataschema/components/DataSchemaCatalog/DataSchemaCatalog';
 
 function App() {
     return (

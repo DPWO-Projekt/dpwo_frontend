@@ -1,6 +1,6 @@
 import {VCard} from "./VCard";
 import {LanguageSpecificDatasetInfo} from "./LanguageSpecificDatasetInfo";
-import {DataScheme} from "./DataScheme";
+import {DataScheme} from "../../dataschema/types/DataScheme";
 
 export interface Dataset {
     id: number;

@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {Button, Card, Container, Form, Table} from 'react-bootstrap';
 import {ChevronRight, Pencil, Trash} from 'react-bootstrap-icons';
-import {CatalogService, RenderState} from "../../service/CatalogService";
+import {CatalogService, RenderState} from '../../features/CatalogService';
 import { useNavigate } from 'react-router';
-import {Catalog} from "../../model/Catalog";
+import { Catalog } from '../../types/Catalog'; 
 
 interface CatalogProps {
 }
