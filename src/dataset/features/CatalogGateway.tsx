@@ -1,4 +1,4 @@
-import {Catalog} from "../model/Catalog";
+import { Catalog } from "../types/Catalog";
 
 export class CatalogGateway {
     public async fetchCatalog(): Promise<Catalog> {
