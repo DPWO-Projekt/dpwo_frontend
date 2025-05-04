@@ -1,0 +1,17 @@
+{
+  "dataschema":{
+    "name": "dataschema",
+    "title": "Data schemas",
+    "description": "Explore available data schemas."
+  },
+  "dataset":{
+    "name": "dataset",
+    "title": "Data sets",
+    "description": "View datesets definitions."
+  },
+  "tba":{
+    "name": "tba",
+    "title": "TBA",
+    "description": "TBA"
+  }
+}
