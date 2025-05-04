@@ -1,0 +1,15 @@
+{
+  "home": "/",
+  "modules": {
+    "dataset": {
+      "catalog": "/catalog",
+      "add": "/dataset-add",
+      "edit": "/dataset-edit"
+    },
+    "dataschema": {
+      "catalog": "/dataschema-catalog",
+      "add": "/dataschema-add",
+      "edit": "/dataschema-edit"
+    }
+  }
+}
