@@ -1,0 +1,1 @@
+Here we add any reusable components across the whole app, ui, buttons, tables, toasts, etc.

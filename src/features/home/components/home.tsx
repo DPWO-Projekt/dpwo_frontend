@@ -1,0 +1,16 @@
+import React, {FC} from 'react';
+import {Link} from "react-router";
+import HomeLinkBox from './home-link-box';
+import styles from '../styles/home.module.css';
+
+interface HomeProps {
+}
+
+const Home: FC<HomeProps> = () => (
+    <div className={styles.container}>
+        <HomeLinkBox name="dataschema"/>
+        <HomeLinkBox name="dataset"/>
+    </div>
+);
+
+export default Home;

@@ -1,14 +1,13 @@
-import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router";
-import Home from "./home/components/Home";
-import CatalogView from './dataset/components/Catalog/CatalogView';
-import DatasetEdit from './dataset/components/DatasetEdit/DatasetEdit';
-import DatasetAdd from './dataset/components/DatasetAdd/DatasetAdd';
-import DataSchemaAdd from './dataschema/components/DataSchemaAdd/DataSchemaAdd';
-import DataSchemaEdit from './dataschema/components/DataSchemaEdit/DataSchemaEdit';
+import Home from "./features/home/components/home";
+import DatasetCatalog from './features/dataset/components/dataset-catalog';
+import DatasetEdit from './features/dataset/components/dataset-edit';
+import DatasetAdd from './features/dataset/components/dataset-add';
+import DataSchemaAdd from './features/dataschema/components/dataschema-add';
+import DataSchemaEdit from './features/dataschema/components/dataschema-edit';
 import { ToastContainer } from 'react-toastify';
-import DataSchemaCatalog from './dataschema/components/DataSchemaCatalog/DataSchemaCatalog';
+import DataSchemaCatalog from './features/dataschema/components/dataschema-catalog';
 
 function App() {
     return (
@@ -18,10 +17,10 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/dataset-add" element={<DatasetAdd/>}/>
                 <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
-                <Route path="/catalog" element={<CatalogView/>}/>
+                <Route path="/catalog" element={<DatasetCatalog/>}/>
                 <Route path="/dataschema-catalog" element={<DataSchemaCatalog/>}/>
-                <Route path="/dataset-edit" element={<DatasetEdit/>}/>
-                <Route path="/dataschema-edit" element={<DataSchemaEdit/>}/>
+                <Route path="/dataset-edit/:datasetId" element={<DatasetEdit/>}/>
+                <Route path="/dataschema-edit/:dataschemaId" element={<DataSchemaEdit/>}/>
             </Routes>
         </div>
     );
