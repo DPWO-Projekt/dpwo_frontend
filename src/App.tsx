@@ -20,7 +20,7 @@ function App() {
                 <Route path="/catalog" element={<DatasetCatalog/>}/>
                 <Route path="/dataschema-catalog" element={<DataSchemaCatalog/>}/>
                 <Route path="/dataset-edit/:datasetId" element={<DatasetEdit/>}/>
-                <Route path="/dataschema-edit/:dataschemaId" element={<DataSchemaEdit/>}/>
+                <Route path="/dataschema-edit/:schemaId" element={<DataSchemaEdit/>}/>
             </Routes>
         </div>
     );

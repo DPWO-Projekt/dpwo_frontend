@@ -1,93 +1,50 @@
 import {FC, useEffect, useRef, useState} from 'react';
 import {CatalogService, RenderState} from "../../dataset/api/dataset-catalog-service";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { fetchAllDataSchema } from '../api/dataschema-fetchAll';
+import { DataSchema } from '../types/dataschema';
+import { ChevronRight } from 'react-bootstrap-icons';
+
 interface CatalogProps {
 }
 
 const DataSchemaCatalog: FC<CatalogProps> = () => {
-    const catalogServiceRef = useRef(new CatalogService());
-    const catalogService = catalogServiceRef.current;
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+    const [dataschemas, setDataSchemas] = useState<DataSchema[] | null>(null);
     const [renderState, setRenderState] = useState<RenderState | null>(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const loadData = async () => {
-            await catalogService.fetchCatalog();
-            setRenderState(catalogService.getState());
+            setIsLoading(true);
+            const data = await fetchAllDataSchema();
+            setDataSchemas(data);
+            setIsLoading(false);
         };
-        loadData().then();
+        loadData();
     }, []);
 
-    const handleNavigate = (subCatalogId: number) => {
-        catalogService.navigateTo(subCatalogId);
-        setRenderState(catalogService.getState());
-    };
-
-    const handleBack = () => {
-        catalogService.goBack();
-        setRenderState(catalogService.getState());
-    };
-
-    const handleBreadcrumbClick = (index: number) => {
-        if (renderState) {
-            const newPath = renderState.breadcrumb.slice(0, index + 1).map((i) => i.id);
-            catalogService.setPath(newPath);
-            setRenderState(catalogService.getState());
-        }
-    };
-
-    if (!renderState) {
-        return (<div
-            style={{
-                backgroundColor: '#ece9e2',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            Loading...
-        </div>);
+    if (isLoading) {
+        return <div><p>Loading schema data...</p></div>;
     }
 
-    if (renderState.error) {
-        return (<div
-            style={{
-                backgroundColor: '#ece9e2',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            Error: {renderState.error}
-        </div>);
+    if (fetchError) {
+        return <div><p style={{ color: 'red' }}>Error: {fetchError}</p><Link to="/catalog">Go back</Link></div>;
     }
-
-    if (!renderState.currentCatalog) {
-        return (<div
-            style={{
-                backgroundColor: '#ece9e2',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            No catalog data available
-        </div>);
-    }
-
-    const {breadcrumb, currentCatalog} = renderState;
-    const showBackButton = breadcrumb.length > 1;
-    const subCatalogs = currentCatalog.catalogs || [];
-    const datasets = currentCatalog.datasets || [];
 
     return (
       <div>
-        PLACEHOLDER
+        {dataschemas!.map(schema => (
+            <div>
+                <div className="station" key={schema.name}>{schema.name}</div>
+                <div><ChevronRight
+                    onClick={() => navigate('/dataschema-edit/' + schema.id)}
+                    style={{cursor: 'pointer'}}
+                /></div>
+            </div>
+        ))}
       </div>
     );
 };
