@@ -214,10 +214,10 @@ const Register: FC = () => {
                             {errors.repeatPassword && <div className={styles.fieldError}>{errors.repeatPassword}</div>}
                         </div>
                         <div className={styles.buttonContainer}>
-                            <button type="button" onClick={() => navigate('/login')} className={styles.returnButton}>
+                            <button type="button" onClick={() => navigate('/login')} className={styles.blueTextButton}>
                                 Return
                             </button>
-                            <button type="submit" className={styles.submitButton}>
+                            <button type="submit" className={styles.redTextButton}>
                                 Register
                             </button>
                         </div>

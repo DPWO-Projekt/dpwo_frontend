@@ -9,6 +9,7 @@ import DataSchemaEdit from './features/dataschema/components/dataschema-edit';
 import { ToastContainer } from 'react-toastify';
 import DataSchemaCatalog from './features/dataschema/components/dataschema-catalog';
 import Register from './features/auth/components/register';
+import Login from './features/auth/components/login';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/login" element={<Login/>}/>
                 <Route path="/dataset-add" element={<DatasetAdd/>}/>
                 <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
                 <Route path="/catalog" element={<DatasetCatalog/>}/>
