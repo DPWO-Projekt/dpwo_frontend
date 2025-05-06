@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Link} from "react-router";
 import HomeLinkBox from './home-link-box';
-import styles from '../styles/home.module.css';
+import styles from '../styles/Home.module.css';
 
 interface HomeProps {
 }
