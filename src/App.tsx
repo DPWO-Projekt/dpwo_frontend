@@ -12,7 +12,7 @@ import DataSchemaCatalog from './features/dataschema/components/dataschema-catal
 function App() {
     return (
         <div>
-            <ToastContainer />
+            <ToastContainer/>
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/dataset-add" element={<DatasetAdd/>}/>

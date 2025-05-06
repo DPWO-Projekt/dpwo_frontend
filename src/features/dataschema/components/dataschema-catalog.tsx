@@ -3,7 +3,9 @@ import {CatalogService, RenderState} from "../../dataset/api/dataset-catalog-ser
 import { Link, useNavigate } from 'react-router';
 import { fetchAllDataSchema } from '../api/dataschema-fetchAll';
 import { DataSchema } from '../types/dataschema';
-import { ChevronRight } from 'react-bootstrap-icons';
+import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
+import styles from '../styles/dataschema-catalog.module.css';
+import { Button, Card, Container, Form, Table } from 'react-bootstrap';
 
 interface CatalogProps {
 }
@@ -35,16 +37,61 @@ const DataSchemaCatalog: FC<CatalogProps> = () => {
     }
 
     return (
-      <div>
-        {dataschemas!.map(schema => (
-            <div>
-                <div className="station" key={schema.name}>{schema.name}</div>
-                <div><ChevronRight
-                    onClick={() => navigate('/dataschema-edit/' + schema.id)}
-                    style={{cursor: 'pointer'}}
-                /></div>
-            </div>
-        ))}
+      <div className={styles.container}>
+        <div className={styles.title}>
+            Data schemas
+        </div>
+        <Container fluid className="d-flex justify-content-center pt-5">
+            <Card className="col-8" style={{borderRadius: '10px'}}>
+                <Table hover className={styles.table}>
+                    <thead>
+                    <tr>
+                        <th>
+                            <Form.Check type="checkbox"/>
+                        </th>
+                        <th>Schema name</th>
+                        <th>Last update</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {/* Datasets */}
+                    {dataschemas!.map((schema) => (<tr key={schema.id}>
+                        <td>
+                            <Form.Check type="checkbox"/>
+                        </td>
+                        <td>
+                            <span>
+                                📄{' '}
+                                {schema.name || 'Untitled Dataset'}
+                            </span>
+                        </td>
+                        <td>21 Jan 2013</td>
+                        <td>
+                            <Pencil
+                                style={{cursor: 'pointer', marginRight: '10px'}}
+                                onClick={() => navigate(`/dataschema-edit/${schema.id}`)}
+                            />
+                            <Trash style={{cursor: 'pointer'}}/>
+                        </td>
+                    </tr>))}
+                    </tbody>
+                </Table>
+            </Card>
+        </Container>
+        <Button
+            style={{
+                backgroundColor: '#28a745',
+                borderColor: '#28a745',
+                borderRadius: '20px',
+                padding: '5px 20px',
+                marginTop: '16px'
+            }}
+            onClick={() => navigate("/dataschema-add")}
+        >
+            Add definition of dataset
+        </Button>
       </div>
     );
 };
