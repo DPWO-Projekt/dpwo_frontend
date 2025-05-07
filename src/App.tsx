@@ -8,24 +8,53 @@ import DataSchemaAdd from './features/dataschema/components/dataschema-add';
 import DataSchemaEdit from './features/dataschema/components/dataschema-edit';
 import { ToastContainer } from 'react-toastify';
 import DataSchemaCatalog from './features/dataschema/components/dataschema-catalog';
+import Register from './features/auth/components/register';
+import Login from './features/auth/components/login';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
 
 function App() {
     return (
         <div>
             <ToastContainer />
             <Routes>
-                {/* Home routes */}
-                <Route path="/" element={<Home/>}/>
-            
-                {/* Dataset routes */}
-                <Route path="/dataset-catalog" element={<DatasetCatalog/>}/>
-                <Route path="/dataset-add" element={<DatasetAdd/>}/>
-                <Route path="/dataset-edit/:datasetId" element={<DatasetEdit/>}/>
-            
-                {/* Dataschema rotues */}
-                <Route path="/dataschema-catalog" element={<DataSchemaCatalog/>}/>
-                <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
-                <Route path="/dataschema-edit/:schemaId" element={<DataSchemaEdit/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
+                
+                <Route path="/" element={
+                    <ProtectedRoute>
+                        <Home/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataset-add" element={
+                    <ProtectedRoute>
+                        <DatasetAdd/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataschema-add" element={
+                    <ProtectedRoute>
+                        <DataSchemaAdd/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataschema-catalog" element={
+                    <ProtectedRoute>
+                        <DatasetCatalog/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataschema-catalog" element={
+                    <ProtectedRoute>
+                        <DataSchemaCatalog/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataset-edit/:datasetId" element={
+                    <ProtectedRoute>
+                        <DatasetEdit/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataschema-edit/:dataschemaId" element={
+                    <ProtectedRoute>
+                        <DataSchemaEdit/>
+                    </ProtectedRoute>
+                }/>
             </Routes>
         </div>
     );
