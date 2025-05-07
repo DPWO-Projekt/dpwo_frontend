@@ -177,9 +177,9 @@ const DatasetAdd: FC<DatasetEditProps> = ({
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Dataset URI</InputGroup.Text>
             <Form.Control
-              type="url"
+              type="text"
               className={`${styles.inputValue}`}
-              placeholder="Dataset URI (optional)"
+              placeholder="Dataset URI"
               aria-label="Dataset URI"
               value={datasetUri}
               onChange={(e) => setDatasetUri(e.target.value)}

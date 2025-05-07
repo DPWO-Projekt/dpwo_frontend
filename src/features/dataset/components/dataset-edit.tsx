@@ -159,7 +159,7 @@ const DatasetEdit: FC = () => {
           <InputGroup className={styles.inputGroup}>
             <InputGroup.Text className={styles.inputLabel}>Dataset URI</InputGroup.Text>
             <Form.Control
-              type="url"
+              type="text"
               value={uri}
               onChange={e => setUri(e.target.value)}
               className={styles.inputValue}
