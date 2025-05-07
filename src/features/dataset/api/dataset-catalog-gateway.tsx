@@ -12,7 +12,7 @@ export class CatalogGateway {
 
         return  {
             id: 1,
-            title: 'Weather Data',
+            title: '',
             description: 'Weather data from various sources',
             datasets: datasets,
         } as Catalog;
