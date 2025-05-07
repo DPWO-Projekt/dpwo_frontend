@@ -51,7 +51,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
     contactEmails: [''],
   });
 
-  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
+  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT', 'PL'];
 
   const [languageDescriptions, setLanguageDescriptions] = useState(
     [
@@ -177,7 +177,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Dataset URI</InputGroup.Text>
             <Form.Control
-              type="text"
+              type="url"
               className={`${styles.inputValue}`}
               placeholder="Dataset URI"
               aria-label="Dataset URI"

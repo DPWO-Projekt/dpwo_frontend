@@ -23,7 +23,7 @@ const DatasetEdit: FC = () => {
   const [vCard, setVCard] = useState<VCard>();
   const selectedLanguagesSet = new Set(languageSpecificDatasetInfo.map(desc => desc.langCode));
 
-  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
+  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT', 'PL'];
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -159,7 +159,7 @@ const DatasetEdit: FC = () => {
           <InputGroup className={styles.inputGroup}>
             <InputGroup.Text className={styles.inputLabel}>Dataset URI</InputGroup.Text>
             <Form.Control
-              type="text"
+              type="url"
               value={uri}
               onChange={e => setUri(e.target.value)}
               className={styles.inputValue}
