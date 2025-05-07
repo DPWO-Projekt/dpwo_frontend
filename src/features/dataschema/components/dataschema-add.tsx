@@ -98,7 +98,7 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
         console.log('Dataset updated successfully!');
         onSaveSuccess?.();
         toast('Dataschema added successfully!');
-        navigate("/catalog");
+        navigate("/dataschema-catalog");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
         console.error('Failed Response:', response.status, errorData);

@@ -110,7 +110,7 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = () => {
       );
 
       toast.success('Dataschema updated successfully!');
-      navigate("/catalog");
+      navigate("/dataschema-catalog");
 
     } catch (error: any) {
       console.error('Failed to update dataschema:', error);
@@ -125,13 +125,13 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = () => {
   }
 
   if (fetchError) {
-    return <div className={styles.container}><p style={{ color: 'red' }}>Error: {fetchError}</p><Link to="/catalog">Go back</Link></div>;
+    return <div className={styles.container}><p style={{ color: 'red' }}>Error: {fetchError}</p><Link to="/dataschema-catalog">Go back</Link></div>;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.nav}>
-        <Link to={'/catalog'}>Back to Catalog</Link>
+        <Link to={'/dataschema-catalog'}>Back to Catalog</Link>
       </div>
 
       <div className={styles.header}>Edit data schema{schemaId ? ` (ID: ${schemaId.substring(0, 8)}...)` : ''}</div>

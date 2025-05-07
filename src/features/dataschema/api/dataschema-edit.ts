@@ -7,13 +7,13 @@ interface SchemaPropertyInputItem extends Property {
 
 // Interface for the payload expected by the UPDATE API endpoint
 interface DataSchemaUpdatePayload {
-  title: string; // Renamed from 'name' in the original component state
+  name: string; // Renamed from 'name' in the original component state
   properties: Record<string, string>; // Map of property name (key) to property type (value)
 }
 
 export const editDataSchema = async (
   dataschemaId: string,
-  title: string,
+  name: string,
   schemaProperties: SchemaPropertyInputItem[] | Property[]
 ): Promise<void> => {
 
@@ -21,7 +21,7 @@ export const editDataSchema = async (
     console.error("updateDataSchema error: Invalid or missing dataschemaId provided.");
     throw new Error("Data Schema ID is required for update.");
   }
-  if (!title || title.trim() === '') {
+  if (!name || name.trim() === '') {
     console.error("updateDataSchema error: Title cannot be empty.");
     throw new Error("Data Schema title cannot be empty.");
   }
@@ -50,7 +50,7 @@ export const editDataSchema = async (
   });
 
   const payload: DataSchemaUpdatePayload = {
-    title: title.trim(),
+    name: name.trim(),
     properties: propMap,
   };
 
