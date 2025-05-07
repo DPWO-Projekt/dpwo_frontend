@@ -4,6 +4,7 @@ import styles from '../styles/dataset-add.module.css';
 import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 interface InitialLanguageDescription {
   title: string;
@@ -42,7 +43,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   const [datasetTheme, setDatasetTheme] = useState('');
   const [datasetUri, setDatasetUri] = useState('');
   const navigate = useNavigate();
-  
+
   const [vCard, setVCard] = useState({
     authorNames: [''],
     relatedWebsites: [''],
@@ -132,7 +133,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       if (response.ok) {
         toast('Dataset added successfully!');
         onSaveSuccess?.();
-        navigate("/catalog");
+        navigate("/dataset-catalog");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
         console.error('Failed Response:', response.status, errorData);
@@ -152,9 +153,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.nav}>
-        <Link to={'/'}>Home</Link>
-        <CloseButton />
+      <div>
+        <BackButtonComponent to='/dataset-catalog' />
       </div>
 
       <div className={styles.header}>Add dataset definition</div>

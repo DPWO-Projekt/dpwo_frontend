@@ -9,6 +9,7 @@ import { editDataSchema } from '../api/dataschema-edit';
 
 import { useSchemaProperties, SchemaPropertyItem } from '../hooks/useSchemaProperties';
 import { fetchDataSchema } from '../api/dataschema-fetch';
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 interface DataSchemaEditProps { }
 
@@ -130,11 +131,11 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.nav}>
-        <Link to={'/dataschema-catalog'}>Back to Catalog</Link>
+      <div>
+        <BackButtonComponent to='/dataschema-catalog' />
       </div>
 
-      <div className={styles.header}>Edit data schema{schemaId ? ` (ID: ${schemaId.substring(0, 8)}...)` : ''}</div>
+      <div className={styles.header}>Edit data schema</div>
 
       <Form onSubmit={handleSubmit}>
         <div className={styles.section}>

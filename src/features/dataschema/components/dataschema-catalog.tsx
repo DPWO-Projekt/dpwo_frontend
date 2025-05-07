@@ -7,6 +7,7 @@ import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
 import styles from '../styles/dataschema-catalog.module.css';
 import { Button, Card, Container, Form, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 interface CatalogProps {
 }
@@ -46,6 +47,9 @@ const DataSchemaCatalog: FC<CatalogProps> = () => {
 
     return (
       <div className={styles.container}>
+        <div className={styles.backBtn}>
+            <BackButtonComponent to='/' />
+        </div>
         <div className={styles.title}>
             Data schemas
         </div>

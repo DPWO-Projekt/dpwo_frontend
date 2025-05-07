@@ -4,6 +4,7 @@ import {ChevronRight, Pencil, Trash} from 'react-bootstrap-icons';
 import {CatalogService, RenderState} from '../api/dataset-catalog-service';
 import {useNavigate} from 'react-router';
 import CatalogAddModal from './catalog-add-modal';
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 interface DatasetCatalogProps {
 }
@@ -90,7 +91,10 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     const subCatalogs = currentCatalog.catalogs || [];
     const datasets = currentCatalog.datasets || [];
 
-    return (<div style={{backgroundColor: '#ece9e2', minHeight: '100vh'}}>
+    return (<div style={{backgroundColor: '#ece9e2', minHeight: '100vh', padding: '50px'}}>
+            <div>
+                <BackButtonComponent to='/' />
+              </div>
             <Container fluid className="d-flex justify-content-center pt-5">
                 <Card className="col-8" style={{borderRadius: '10px'}}>
                     <Card.Header

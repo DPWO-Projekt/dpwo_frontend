@@ -2,6 +2,6 @@ export interface LanguageSpecificDatasetInfo {
     id?: string;
     title: string;
     description: string;
-    keywords: string[];
+    keyword: string[];
     langCode: string;
 }

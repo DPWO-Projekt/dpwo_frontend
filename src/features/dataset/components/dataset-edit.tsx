@@ -9,6 +9,8 @@ import { editDataset } from '../api/dataset-edit';
 import { Dataset } from '../types/dataset';
 import { VCard } from '../types/v-card';
 import { LanguageSpecificDatasetInfo } from '../types/language-specific-dataset-info';
+import { ArrowLeft } from 'react-bootstrap-icons'
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 const DatasetEdit: FC = () => {
   const { datasetId } = useParams<{ datasetId: string }>();
@@ -52,7 +54,6 @@ const DatasetEdit: FC = () => {
           descriptions.map((desc) => ({
             ...desc,
             id: uuidv4(),
-            keyword: Array.isArray(desc.keywords) ? desc.keywords.join(', ') : desc.keywords || '',
           }))
         );
       } catch (error: any) {
@@ -74,7 +75,7 @@ const DatasetEdit: FC = () => {
         {
           id: uuidv4(),
           title: '',
-          keywords: [],
+          keyword: [],
           langCode: nextAvailableLanguage,
           description: '',
         },
@@ -99,7 +100,7 @@ const DatasetEdit: FC = () => {
   ) => {
     setLanguageSpecificDatasetInfo(prev =>
       prev.map(desc =>
-        desc.id === idToUpdate ? { ...desc, field: value } : desc
+        desc.id === idToUpdate ? { ...desc, [field]: value } : desc
       )
     );
   };
@@ -108,10 +109,12 @@ const DatasetEdit: FC = () => {
     e.preventDefault();
     setIsSaving(true);
 
+    const languageSpecificDatasetInfoPayload = languageSpecificDatasetInfo.map(({ id, ...obj }) => obj)
+
     const payload: Dataset = {
       theme,
       uri,
-      languageSpecificDatasetInfo,
+      languageSpecificDatasetInfo: languageSpecificDatasetInfoPayload,
       schemaId,
       vCard,
     };
@@ -128,9 +131,8 @@ const DatasetEdit: FC = () => {
   }
   return (
     <div className={styles.container}>
-      <div className={styles.nav}>
-        <Link to="/">Home</Link>
-        <CloseButton />
+      <div>
+        <BackButtonComponent to='/dataset-catalog' />
       </div>
 
       <div className={styles.header}>Edit dataset definition</div>
@@ -214,8 +216,8 @@ const DatasetEdit: FC = () => {
               <InputGroup className={styles.inputGroup}>
                 <InputGroup.Text className={styles.inputLabel}>Keywords</InputGroup.Text>
                 <Form.Control
-                  value={desc.keywords}
-                  onChange={e => handleDescriptionChange(desc.id, 'keywords', e.target.value)}
+                  value={desc.keyword}
+                  onChange={e => handleDescriptionChange(desc.id, 'keyword', e.target.value.split(',').map(keyword => keyword.trim()))}
                   className={styles.inputValue}
                 />
               </InputGroup>

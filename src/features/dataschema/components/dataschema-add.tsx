@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, Send } from 'react-bootstrap-icons'
 import { toast } from 'react-toastify';
+import { BackButtonComponent } from '../../../components/back-button-component';
 
 export interface Property {
   type: string;
@@ -116,8 +117,8 @@ const DataSchemaAdd: FC<DataSchemaAddProps> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.nav}>
-        <Link to={'/'}>Home</Link>
+      <div>
+        <BackButtonComponent to='/dataschema-catalog' />
       </div>
 
       <div className={styles.header}>Add data schema</div>

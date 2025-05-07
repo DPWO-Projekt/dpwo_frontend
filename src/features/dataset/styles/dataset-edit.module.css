@@ -48,12 +48,6 @@
     font-size: large !important;
 }
 
-.nav {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-}
-
 .inputGroupLabel {
     /* font-family: quicksand !important; */
     font-weight: bold !important;
