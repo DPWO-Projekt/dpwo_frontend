@@ -131,7 +131,7 @@ const DataSchemaEdit: FC<DataSchemaEditProps> = () => {
   return (
     <div className={styles.container}>
       <div className={styles.nav}>
-        <Link to={'/catalog'}>Back to Catalog</Link>
+        <Link to={'/dataschema-catalog'}>Back to Catalog</Link>
       </div>
 
       <div className={styles.header}>Edit data schema{schemaId ? ` (ID: ${schemaId.substring(0, 8)}...)` : ''}</div>

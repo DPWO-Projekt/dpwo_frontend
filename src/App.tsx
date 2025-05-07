@@ -37,12 +37,12 @@ function App() {
                 }/>
                 <Route path="/dataschema-catalog" element={
                     <ProtectedRoute>
-                        <DatasetCatalog/>
+                        <DataSchemaCatalog/>
                     </ProtectedRoute>
                 }/>
-                <Route path="/dataschema-catalog" element={
+                <Route path="/dataset-catalog" element={
                     <ProtectedRoute>
-                        <DataSchemaCatalog/>
+                        <DatasetCatalog/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/dataset-edit/:datasetId" element={
@@ -50,7 +50,7 @@ function App() {
                         <DatasetEdit/>
                     </ProtectedRoute>
                 }/>
-                <Route path="/dataschema-edit/:dataschemaId" element={
+                <Route path="/dataschema-edit/:schemaId" element={
                     <ProtectedRoute>
                         <DataSchemaEdit/>
                     </ProtectedRoute>

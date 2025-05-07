@@ -98,7 +98,7 @@ const DataSchemaCatalog: FC<CatalogProps> = () => {
             }}
             onClick={() => navigate("/dataschema-add")}
         >
-            Add definition of dataset
+            Add definition of dataschema
         </Button>
       </div>
     );
