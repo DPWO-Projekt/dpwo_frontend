@@ -1,14 +1,12 @@
-// src/services/dataSchemaService.ts
-import { Property } from '../types/property'; // Adjust path if needed or move Property
+import { Property } from '../types/property';
 
 interface SchemaPropertyInputItem extends Property {
   id: string;
 }
 
-// Interface for the payload expected by the UPDATE API endpoint
 interface DataSchemaUpdatePayload {
-  name: string; // Renamed from 'name' in the original component state
-  properties: Record<string, string>; // Map of property name (key) to property type (value)
+  name: string;
+  properties: Record<string, string>;
 }
 
 export const editDataSchema = async (
@@ -38,10 +36,8 @@ export const editDataSchema = async (
     if (trimmedName) {
         if (propMap.hasOwnProperty(trimmedName)) {
              console.warn(`Duplicate property name found and will be overwritten: "${trimmedName}"`);
-             // Or throw an error if duplicates aren't allowed by the backend/UI validation missed it
-             // throw new Error(`Duplicate property name found: "${trimmedName}"`);
         }
-        propMap[trimmedName] = prop.type; // Add type (assuming type is always valid)
+        propMap[trimmedName] = prop.type;
         hasValidProperties = true;
     } else {
       const uiId = (prop as SchemaPropertyInputItem).id ? ` (UI ID: ${(prop as SchemaPropertyInputItem).id})` : '';
