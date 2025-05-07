@@ -51,7 +51,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
     contactEmails: [''],
   });
 
-  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
+  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT', 'PL'];
 
   const [languageDescriptions, setLanguageDescriptions] = useState(
     [
@@ -131,19 +131,19 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       });
 
       if (response.ok) {
-        toast('Dataset added successfully!');
+        toast.success('Dataset added successfully!');
         onSaveSuccess?.();
         navigate("/dataset-catalog");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
         console.error('Failed Response:', response.status, errorData);
         onSaveError?.(errorData);
-        toast('Unexpected Error!');
+        toast.error('Unexpected Error!');
       }
     } catch (error) {
       console.error('Network or other error:', error);
       onSaveError?.(error);
-      toast('Network error!');
+      toast.error('Network error!');
     } finally {
       setIsSaving(false);
     }
@@ -179,7 +179,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
             <Form.Control
               type="url"
               className={`${styles.inputValue}`}
-              placeholder="Dataset URI (optional)"
+              placeholder="Dataset URI"
               aria-label="Dataset URI"
               value={datasetUri}
               onChange={(e) => setDatasetUri(e.target.value)}

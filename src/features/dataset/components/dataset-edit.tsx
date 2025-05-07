@@ -23,7 +23,7 @@ const DatasetEdit: FC = () => {
   const [vCard, setVCard] = useState<VCard>();
   const selectedLanguagesSet = new Set(languageSpecificDatasetInfo.map(desc => desc.langCode));
 
-  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT'];
+  const languageList = ['EN', 'DE', 'FR', 'IT', 'ES', 'PT', 'PL'];
 
   const [isSaving, setIsSaving] = useState(false);
 

@@ -191,11 +191,12 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
                                             }
                                         </Dropdown.Toggle>
 
-                                        {dataschemas?.map((dataschema) =>
+                                        
                                             <Dropdown.Menu>
-                                                <Dropdown.Item onClick={() => handleSetDataschema(dataset.id!, dataschema.id)}>{dataschema.name}</Dropdown.Item>
+                                                {dataschemas?.map((dataschema) =>
+                                                    <Dropdown.Item onClick={() => handleSetDataschema(dataset.id!, dataschema.id)}>{dataschema.name}</Dropdown.Item>
+                                                )}
                                             </Dropdown.Menu>
-                                        )}
 
                                     </Dropdown>
                                 </td>
