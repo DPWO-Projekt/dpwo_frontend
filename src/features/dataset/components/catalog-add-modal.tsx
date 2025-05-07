@@ -54,7 +54,7 @@ const CatalogAddModal: FC<CatalogAddModalProps> = ({ show, onHide, catalogServic
         toast.success('Catalog added successfully!');
         onHide();
 
-        navigate('/catalog');
+        navigate('/dataset-catalog');
     };
 
     return (

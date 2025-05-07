@@ -1,6 +1,8 @@
 .container{
   background-color: #F6F4EC;
   text-align: center;
+  padding: 50px;
+  margin: auto;
 }
 
 .info{
@@ -28,4 +30,8 @@
   border-color: '#28a745';
   border-radius: '20px';
   padding: '5px 20px';
+}
+
+.backBtn{
+  float: left;
 }
