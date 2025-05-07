@@ -3,6 +3,14 @@
   text-align: center;
 }
 
+.info{
+  background-color: #F6F4EC;
+  min-height: 100dvh;
+  margin: auto;
+  padding: 50px;
+  text-align: center;
+}
+
 .title{
   background-color: #F6F4EC;
   color: #004A6C;

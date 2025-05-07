@@ -12,14 +12,19 @@ import DataSchemaCatalog from './features/dataschema/components/dataschema-catal
 function App() {
     return (
         <div>
-            <ToastContainer/>
+            <ToastContainer />
             <Routes>
+                {/* Home routes */}
                 <Route path="/" element={<Home/>}/>
+            
+                {/* Dataset routes */}
+                <Route path="/dataset-catalog" element={<DatasetCatalog/>}/>
                 <Route path="/dataset-add" element={<DatasetAdd/>}/>
-                <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
-                <Route path="/catalog" element={<DatasetCatalog/>}/>
-                <Route path="/dataschema-catalog" element={<DataSchemaCatalog/>}/>
                 <Route path="/dataset-edit/:datasetId" element={<DatasetEdit/>}/>
+            
+                {/* Dataschema rotues */}
+                <Route path="/dataschema-catalog" element={<DataSchemaCatalog/>}/>
+                <Route path="/dataschema-add" element={<DataSchemaAdd/>}/>
                 <Route path="/dataschema-edit/:schemaId" element={<DataSchemaEdit/>}/>
             </Routes>
         </div>

@@ -6,6 +6,7 @@ import { DataSchema } from '../types/dataschema';
 import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
 import styles from '../styles/dataschema-catalog.module.css';
 import { Button, Card, Container, Form, Table } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 interface CatalogProps {
 }
@@ -20,20 +21,27 @@ const DataSchemaCatalog: FC<CatalogProps> = () => {
 
     useEffect(() => {
         const loadData = async () => {
-            setIsLoading(true);
-            const data = await fetchAllDataSchema();
-            setDataSchemas(data);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                const data = await fetchAllDataSchema();
+                setDataSchemas(data);
+                setIsLoading(false);
+            } catch (error: any){
+                console.error('Failed to fetch dataschema:', error);
+                toast.error(`Error loading schema: ${error?.message || 'Unknown error'}`);
+                setFetchError(error?.message || 'Failed to load schema data.');
+                setIsLoading(false);
+            }
         };
         loadData();
     }, []);
 
     if (isLoading) {
-        return <div><p>Loading schema data...</p></div>;
+        return <div className={styles.info}><p>Loading schema data...</p></div>;
     }
 
     if (fetchError) {
-        return <div><p style={{ color: 'red' }}>Error: {fetchError}</p><Link to="/catalog">Go back</Link></div>;
+        return <div className={styles.info}><p style={{ color: 'red' }}>Error: {fetchError}</p><Link to="/">Go back</Link></div>;
     }
 
     return (

@@ -2,7 +2,7 @@
   "home": "/",
   "modules": {
     "dataset": {
-      "catalog": "/catalog",
+      "catalog": "/dataset-catalog",
       "add": "/dataset-add",
       "edit": "/dataset-edit"
     },
