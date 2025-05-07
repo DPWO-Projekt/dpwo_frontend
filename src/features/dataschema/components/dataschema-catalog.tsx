@@ -7,7 +7,7 @@ import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
 import styles from '../styles/dataschema-catalog.module.css';
 import { Button, Card, Container, Form, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { BackButtonComponent } from '../../../components/back-button-component';
+import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 
 interface CatalogProps {
 }

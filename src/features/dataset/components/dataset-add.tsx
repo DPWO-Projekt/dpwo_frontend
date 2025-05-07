@@ -4,7 +4,7 @@ import styles from '../styles/dataset-add.module.css';
 import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { BackButtonComponent } from '../../../components/back-button-component';
+import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 
 interface InitialLanguageDescription {
   title: string;

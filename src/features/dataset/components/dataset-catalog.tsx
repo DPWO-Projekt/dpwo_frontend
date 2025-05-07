@@ -4,7 +4,7 @@ import {ChevronRight, Pencil, Trash} from 'react-bootstrap-icons';
 import {CatalogService, RenderState} from '../api/dataset-catalog-service';
 import {useNavigate} from 'react-router';
 import CatalogAddModal from './catalog-add-modal';
-import { BackButtonComponent } from '../../../components/back-button-component';
+import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 
 interface DatasetCatalogProps {
 }

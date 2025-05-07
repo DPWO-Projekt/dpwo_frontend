@@ -10,7 +10,7 @@ import { Dataset } from '../types/dataset';
 import { VCard } from '../types/v-card';
 import { LanguageSpecificDatasetInfo } from '../types/language-specific-dataset-info';
 import { ArrowLeft } from 'react-bootstrap-icons'
-import { BackButtonComponent } from '../../../components/back-button-component';
+import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 
 const DatasetEdit: FC = () => {
   const { datasetId } = useParams<{ datasetId: string }>();

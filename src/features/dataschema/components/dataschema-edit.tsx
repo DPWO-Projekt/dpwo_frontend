@@ -9,7 +9,7 @@ import { editDataSchema } from '../api/dataschema-edit';
 
 import { useSchemaProperties, SchemaPropertyItem } from '../hooks/useSchemaProperties';
 import { fetchDataSchema } from '../api/dataschema-fetch';
-import { BackButtonComponent } from '../../../components/back-button-component';
+import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 
 interface DataSchemaEditProps { }
 
