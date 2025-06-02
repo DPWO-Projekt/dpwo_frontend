@@ -11,6 +11,7 @@ import DataSchemaCatalog from './features/dataschema/components/dataschema-catal
 import Register from './features/auth/components/register';
 import Login from './features/auth/components/login';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import DataSetOwnedCatalog from './features/dataset/components/dataset-owned-catalog';
 
 function App() {
     return (
@@ -53,6 +54,11 @@ function App() {
                 <Route path="/dataschema-edit/:schemaId" element={
                     <ProtectedRoute>
                         <DataSchemaEdit/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/dataset-owned" element={
+                    <ProtectedRoute>
+                        <DataSetOwnedCatalog/>
                     </ProtectedRoute>
                 }/>
             </Routes>

@@ -1,0 +1,37 @@
+.container{
+  background-color: #F6F4EC;
+  text-align: center;
+  padding: 50px;
+  margin: auto;
+}
+
+.info{
+  background-color: #F6F4EC;
+  min-height: 100dvh;
+  margin: auto;
+  padding: 50px;
+  text-align: center;
+}
+
+.title{
+  background-color: #F6F4EC;
+  color: #004A6C;
+  font-size: 32px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.table{
+  text-align: center;
+}
+
+.addButton{
+  background-color: '#28a745';
+  border-color: '#28a745';
+  border-radius: '20px';
+  padding: '5px 20px';
+}
+
+.backBtn{
+  float: left;
+}
