@@ -25,11 +25,24 @@
   text-align: center;
 }
 
-.addButton{
-  background-color: '#28a745';
-  border-color: '#28a745';
-  border-radius: '20px';
-  padding: '5px 20px';
+.attachButton{
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 20px;
+  box-shadow: 4px 4px rgba(186, 176, 174, 0.5);
+  margin: 4px;
+}
+
+.editButton{
+  color: #004A6C;
+  background-color: #FDFBF3;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 20px;
+  box-shadow: 4px 4px rgba(186, 176, 174, 0.5);
+  margin: 4px;
 }
 
 .backBtn{

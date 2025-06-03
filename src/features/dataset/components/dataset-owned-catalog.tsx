@@ -1,7 +1,6 @@
 import {FC, useEffect, useRef, useState} from 'react';
 import {CatalogService, RenderState} from "../api/dataset-catalog-service";
 import { Link, useNavigate } from 'react-router';
-import { ChevronRight, Pencil, Trash } from 'react-bootstrap-icons';
 import styles from '../styles/dataset-owned-catalog.module.css';
 import { Button, Card, Container, Dropdown, Form, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -11,6 +10,7 @@ import { getAllDatasets } from '../api/dataset-fetchAll';
 import { DataSchema } from '../../dataschema/types/dataschema';
 import { fetchAllDataSchema } from '../../dataschema/api/dataschema-fetchAll';
 import { setDataSchema } from '../api/dataset-set-dataschema';
+import { FaRegFile } from "react-icons/fa";
 
 interface CatalogProps {
 }
@@ -117,11 +117,8 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                         </td>
                         <td>21 Jan 2013</td>
                         <td>
-                            <Pencil
-                                style={{cursor: 'pointer', marginRight: '10px'}}
-                                onClick={() => navigate(`/dataschema-edit/${dataset.id}`)}
-                            />
-                            <Trash style={{cursor: 'pointer'}}/>
+                            <button className={styles.attachButton}>Attach distribution</button>
+                            <button className={styles.editButton}>Edit</button>
                         </td>
                     </tr>))}
                     </tbody>
