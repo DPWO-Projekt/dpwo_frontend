@@ -1,0 +1,50 @@
+.container{
+  background-color: #F6F4EC;
+  text-align: center;
+  padding: 50px;
+  margin: auto;
+}
+
+.info{
+  background-color: #F6F4EC;
+  min-height: 100dvh;
+  margin: auto;
+  padding: 50px;
+  text-align: center;
+}
+
+.title{
+  background-color: #F6F4EC;
+  color: #004A6C;
+  font-size: 32px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.table{
+  text-align: center;
+}
+
+.attachButton{
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 20px;
+  box-shadow: 4px 4px rgba(186, 176, 174, 0.5);
+  margin: 4px;
+}
+
+.editButton{
+  color: #004A6C;
+  background-color: #FDFBF3;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 20px;
+  box-shadow: 4px 4px rgba(186, 176, 174, 0.5);
+  margin: 4px;
+}
+
+.backBtn{
+  float: left;
+}
