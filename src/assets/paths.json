@@ -10,6 +10,9 @@
       "catalog": "/dataschema-catalog",
       "add": "/dataschema-add",
       "edit": "/dataschema-edit"
+    },
+    "owneddataset": {
+      "catalog": "/dataset-owned"
     }
   }
 }

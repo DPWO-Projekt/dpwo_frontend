@@ -10,6 +10,7 @@ const Home: FC<HomeProps> = () => (
     <div className={styles.container}>
         <HomeLinkBox name="dataschema"/>
         <HomeLinkBox name="dataset"/>
+        <HomeLinkBox name="owneddataset"/>
     </div>
 );
 

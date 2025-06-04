@@ -9,6 +9,11 @@
     "title": "Data sets",
     "description": "View datesets definitions."
   },
+  "owneddataset":{
+    "name": "owneddataset",
+    "title": "Owned sets",
+    "description": "View datesets under your ownership."
+  },
   "tba":{
     "name": "tba",
     "title": "TBA",

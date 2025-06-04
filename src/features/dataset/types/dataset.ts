@@ -1,5 +1,6 @@
 import {VCard} from "./v-card";
 import {LanguageSpecificDatasetInfo} from "./language-specific-dataset-info";
+import { DatasetDistribution } from "../../datasetdistribution/types/datasetdistribution";
 
 export interface Dataset {
     id?: string;
@@ -8,4 +9,5 @@ export interface Dataset {
     vCard?: VCard;
     languageSpecificDatasetInfo: LanguageSpecificDatasetInfo[];
     schemaId: string;
+    datasetdistribution?: DatasetDistribution[];
 }

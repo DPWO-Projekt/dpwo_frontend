@@ -33,7 +33,6 @@ const DatasetEdit: FC = () => {
 
       try {
         const data = await getDataset(datasetId);
-
         setTheme(data.theme || '');
         setUri(data.uri || '');
         setVCard(data.vCard ? {
@@ -116,7 +115,7 @@ const DatasetEdit: FC = () => {
       uri,
       languageSpecificDatasetInfo: languageSpecificDatasetInfoPayload,
       schemaId,
-      vCard,
+      vCard
     };
 
     editDataset(datasetId!, payload).then(() => {
