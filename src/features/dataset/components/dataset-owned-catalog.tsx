@@ -10,7 +10,7 @@ import { getAllDatasets } from '../api/dataset-fetchAll';
 import { DataSchema } from '../../dataschema/types/dataschema';
 import { fetchAllDataSchema } from '../../dataschema/api/dataschema-fetchAll';
 import { setDataSchema } from '../api/dataset-set-dataschema';
-import { FaRegFile } from "react-icons/fa";
+// import { FaRegFile } from "react-icons/fa";
 
 interface CatalogProps {
 }
