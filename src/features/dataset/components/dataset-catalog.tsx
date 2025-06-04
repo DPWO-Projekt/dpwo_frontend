@@ -32,9 +32,11 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
         loadData().then();
     }, []);
 
-    const handleNavigate = (subCatalogId: number) => {
-        catalogService.navigateTo(subCatalogId);
-        setRenderState(catalogService.getState());
+    const handleNavigate = (subCatalogId: string | undefined) => {
+        if (subCatalogId) {
+            catalogService.navigateTo(subCatalogId);
+            setRenderState(catalogService.getState());
+        }
     };
 
     const handleBack = () => {
@@ -102,7 +104,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
 
     const { breadcrumb, currentCatalog } = renderState;
     const showBackButton = breadcrumb.length > 1;
-    const subCatalogs = currentCatalog.catalogs || [];
+    const subCatalogs = currentCatalog?.subCatalogs || [];
     const datasets = currentCatalog.datasets || [];
 
     return (<div style={{ backgroundColor: '#ece9e2', minHeight: '100vh', padding: '50px' }}>
@@ -222,7 +224,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
                                 borderRadius: '20px',
                                 padding: '5px 20px',
                             }}
-                            onClick={() => navigate('/dataset-add')}
+                            onClick={() => navigate('/dataset-add', { state: { parentCatalog: currentCatalog.id } })}
                         >
                             Add definition of dataset
                         </Button>

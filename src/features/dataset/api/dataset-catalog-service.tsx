@@ -3,7 +3,7 @@ import {CatalogGateway} from "./dataset-catalog-gateway";
 import {Catalog} from "../types/catalog";
 
 export interface BreadcrumbItem {
-    id: number;
+    id: string;
     title: string;
 }
 
@@ -16,7 +16,7 @@ export interface RenderState {
 
 export class CatalogService {
     private rootCatalog: Catalog | null = null;
-    private path: number[] = [];
+    private path: string[] = [];
     private loading: boolean = true;
     private error: string | null = null;
     private catalogGateway: CatalogGateway;
@@ -29,7 +29,8 @@ export class CatalogService {
         try {
             this.loading = true;
             this.rootCatalog = await this.catalogGateway.fetchCatalog();
-            this.path = this.rootCatalog ? [this.rootCatalog.id] : [];
+            this.rootCatalog.id = this.rootCatalog.id || "root";
+            this.path = this.rootCatalog && this.rootCatalog.id ? [this.rootCatalog.id] : [];
             this.error = null;
         } catch (err) {
             this.error = 'Failed to load catalog';
@@ -38,9 +39,9 @@ export class CatalogService {
         }
     }
 
-    public navigateTo(subCatalogId: number) {
+    public navigateTo(subCatalogId: string) {
         const current = this.getCurrentCatalog();
-        if (current && current.catalogs?.some(c => c.id === subCatalogId)) {
+        if (current && current.subCatalogs?.some(c => c.id === subCatalogId)) {
             this.path.push(subCatalogId);
         }
     }
@@ -51,7 +52,7 @@ export class CatalogService {
         }
     }
 
-    public setPath(newPath: number[]) {
+    public setPath(newPath: string[]) {
         if (this.rootCatalog && newPath[0] === this.rootCatalog.id) {
             this.path = newPath;
         }
@@ -61,7 +62,7 @@ export class CatalogService {
         if (!this.rootCatalog) return null;
         let current: Catalog | undefined = this.rootCatalog;
         for (const id of this.path.slice(1)) {
-            current = current.catalogs?.find((c) => c.id === id);
+            current = current.subCatalogs?.find((c) => c.id === id);
             if (!current) return null;
         }
         return current;
@@ -78,7 +79,7 @@ export class CatalogService {
                 items.push({id: current.id, title: current.title});
                 // if there is a next item in the path, update current
                 if (i < this.path.length - 1) {
-                    current = current.catalogs?.find((c) => c.id === this.path[i + 1]);
+                    current = current.subCatalogs?.find((c) => c.id === this.path[i + 1]);
                 }
             } else {
                 break;

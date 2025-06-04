@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { CatalogService } from '../api/dataset-catalog-service';
 import { Catalog } from '../types/catalog';
-import { v4 as uuidv4 } from 'uuid';
-
+import { addCatalog } from '../api/catalog-add';
 interface CatalogAddModalProps {
     show: boolean;
     onHide: () => void;
@@ -32,29 +31,36 @@ const CatalogAddModal: FC<CatalogAddModalProps> = ({ show, onHide, catalogServic
             return;
         }
 
-        const isUnique = !currentCatalog.catalogs?.some(c => c.title.toLowerCase() === catalogName.toLowerCase());
+        const isUnique = !currentCatalog.subCatalogs?.some(c => c.title.toLowerCase() === catalogName.toLowerCase());
         if (!isUnique) {
             setNameError('Catalog name has to be unique!');
             setIsSaving(false);
             return;
         }
 
+        console.log(currentCatalog)
+
         const newCatalog: Catalog = {
-            id: parseInt(uuidv4().replace(/\D/g, '').slice(0, 8)),
             title: catalogName,
-            description: '',
+            description: 'test',
             datasets: [],
-            catalogs: [],
+            subCatalogs: [],
+            parentCatalog: currentCatalog.id !== "root" ? currentCatalog.id : undefined,
         };
 
-        currentCatalog.catalogs = currentCatalog.catalogs || [];
-        currentCatalog.catalogs.push(newCatalog);
-        setCatalogName('');
-        setIsSaving(false);
-        toast.success('Catalog added successfully!');
-        onHide();
-
-        navigate('/dataset-catalog');
+        try {
+            const createdCatalog = await addCatalog(newCatalog);
+            currentCatalog.subCatalogs = currentCatalog.subCatalogs || [];
+            currentCatalog.subCatalogs.push(createdCatalog);
+            setCatalogName('');
+            toast.success('Catalog added successfully!');
+            onHide();
+            navigate('/dataset-catalog');
+        } catch (error) {
+            setNameError("Błąd podczas dodawania katalogu. Sprawdź konsolę.");
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
