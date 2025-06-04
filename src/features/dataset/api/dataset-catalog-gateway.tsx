@@ -3,18 +3,11 @@ import { Catalog } from "../types/catalog";
 
 export class CatalogGateway {
     public async fetchCatalog(): Promise<Catalog> {
-        const response = await fetch('/api/datasetdefinition');
+        const response = await fetch('/api/catalog');
         if (!response.ok) {
             throw new Error('Failed to fetch catalog');
         }
 
-        const datasets = await response.json();
-
-        return  {
-            id: 1,
-            title: '',
-            description: 'Weather data from various sources',
-            datasets: datasets,
-        } as Catalog;
+        return await response.json() as Catalog;
     }
 }

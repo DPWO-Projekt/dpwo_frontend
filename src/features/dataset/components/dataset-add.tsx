@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from '../styles/dataset-add.module.css';
-import { Link, useNavigate } from 'react-router';
+import {Link, useLocation, useNavigate} from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
@@ -39,6 +39,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
   onSaveError,
 }) => {
 
+  const location = useLocation();
+  const { parentCatalog } = location.state || {};
   const [schemaId, setSchemaId] = useState('');
   const [datasetTheme, setDatasetTheme] = useState('');
   const [datasetUri, setDatasetUri] = useState('');
@@ -116,7 +118,8 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       schemaId: "schemaId",
       theme: datasetTheme,
       languageSpecificDatasetInfo: languageDescriptions.map(({ id, ...rest }) => rest),
-      vCard: vCard
+      vCard: vCard,
+      parentCatalog: parentCatalog || null,
     };
 
     console.log('Submitting Payload for Adding:', JSON.stringify(payload, null, 2));
