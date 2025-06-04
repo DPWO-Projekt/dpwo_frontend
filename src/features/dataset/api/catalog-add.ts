@@ -1,7 +1,7 @@
 // todo for future use with backend
 import { Catalog } from '../types/catalog';
 
-const API_BASE_URL = '/api/datasetdefinition';
+const API_BASE_URL = '/api';
 
 export const addCatalog = async (payload: Catalog): Promise<Catalog> => {
     const response = await fetch(`${API_BASE_URL}/catalog`, {
@@ -24,20 +24,4 @@ export const addCatalog = async (payload: Catalog): Promise<Catalog> => {
     }
 
     return await response.json();
-};
-
-export const checkCatalogNameUniqueness = async (title: string): Promise<boolean> => {
-    const response = await fetch(`${API_BASE_URL}/catalog/check-name?title=${encodeURIComponent(title)}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to check catalog name uniqueness');
-    }
-
-    const data = await response.json();
-    return data.isUnique;
 };

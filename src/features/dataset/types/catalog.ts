@@ -1,9 +1,10 @@
 import {Dataset} from "./dataset";
 
 export interface Catalog {
-    id: number;
+    id?: string;
     title: string;
     description: string;
     datasets?: Dataset[];
-    catalogs?: Catalog[];
+    subCatalogs?: Catalog[];
+    parentCatalog?: string;
 }
