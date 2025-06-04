@@ -5,13 +5,13 @@ import logo from '../../../assets/logo_dpwo_3.png';
 import {LoginFormData} from '../types/LoginFormData';
 import {login} from '../api/login';
 
-
 const Login: FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<LoginFormData>({
         usernameOrEmail: '',
         password: '',
     });
+    const [error, setError] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -23,11 +23,13 @@ const Login: FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
+
         try {
             await login(formData);
             navigate('/');
         } catch (err) {
-            console.error('Login failed:', err);
+            setError('Failed to login');
         }
     };
 
@@ -36,10 +38,11 @@ const Login: FC = () => {
             <div className={styles.contentBox}>
                 <img src={logo} alt="Logo" className={styles.logo} />
                 <div className={styles.formBox}>
+                    {error && <div className={styles.error}>{error}</div>}
                     <form onSubmit={handleSubmit} className={styles.form} noValidate>
                         <div className={styles.inputGroup}>
                             <label htmlFor="usernameOrEmail">
-                                Username
+                                Username or Email <span className={styles.required}>*</span>
                             </label>
                             <input
                                 type="text"
@@ -47,12 +50,13 @@ const Login: FC = () => {
                                 name="usernameOrEmail"
                                 value={formData.usernameOrEmail}
                                 onChange={handleChange}
+                                className={styles.input}
                                 required
                             />
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="password">
-                                Password 
+                                Password <span className={styles.required}>*</span>
                             </label>
                             <input
                                 type="password"
@@ -60,6 +64,7 @@ const Login: FC = () => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
+                                className={styles.input}
                                 required
                             />
                         </div>

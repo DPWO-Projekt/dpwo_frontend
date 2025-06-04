@@ -11,7 +11,10 @@ export const register = async (payload: RegisterFormData): Promise<void> => {
         body: JSON.stringify({
             username: payload.username,
             email: payload.email,
-            password: payload.password
+            password: payload.password,
+            firstName: payload.firstName,
+            lastName: payload.lastname,
+            role: payload.role
         }),
     });
 
