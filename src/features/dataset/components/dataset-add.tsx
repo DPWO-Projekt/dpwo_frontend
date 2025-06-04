@@ -119,7 +119,7 @@ const DatasetAdd: FC<DatasetEditProps> = ({
       theme: datasetTheme,
       languageSpecificDatasetInfo: languageDescriptions.map(({ id, ...rest }) => rest),
       vCard: vCard,
-      parentCatalog: parentCatalog || null,
+      parentCatalog: parentCatalog != 'root' ? parentCatalog : undefined,
     };
 
     console.log('Submitting Payload for Adding:', JSON.stringify(payload, null, 2));
