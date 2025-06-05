@@ -15,5 +15,18 @@ export const AuthService = {
 
     isAuthenticated: (): boolean => {
         return !!AuthService.getToken();
+    },
+
+    getUserRole: (): string | null => {
+        const token = AuthService.getToken();
+        if (!token) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role;
+        } catch (error) {
+            console.error('Error decoding JWT:', error);
+            return null;
+        }
     }
 }; 

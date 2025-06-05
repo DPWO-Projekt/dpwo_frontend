@@ -7,7 +7,9 @@ import {FormErrors} from '../types/FormErrors';
 import {register} from '../api/register';
 
 const ROLES = [
-    { value: 'DS_MANAGER', label: 'Dataset manager' }
+    { value: 'METADATA_MANAGER', label: 'Metadata manager' },
+    { value: 'DATA_USER', label: 'Data user' },
+    { value: 'DATA_SUPPLIER', label: 'Data supplier' }
 ];
 
 const Register: FC = () => {
@@ -17,7 +19,7 @@ const Register: FC = () => {
         lastname: '',
         username: '',
         email: '',
-        role: 'DS_MANAGER',
+        role: 'DATA_SUPPLIER',
         password: '',
         repeatPassword: ''
     });
