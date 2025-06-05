@@ -11,6 +11,7 @@ import { VCard } from '../types/v-card';
 import { LanguageSpecificDatasetInfo } from '../types/language-specific-dataset-info';
 import { ArrowLeft } from 'react-bootstrap-icons'
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
+import { Availability } from '../../datasetdistribution/types/availability';
 
 const DatasetEdit: FC = () => {
   const { datasetId } = useParams<{ datasetId: string }>();
@@ -115,7 +116,15 @@ const DatasetEdit: FC = () => {
       uri,
       languageSpecificDatasetInfo: languageSpecificDatasetInfoPayload,
       schemaId,
-      vCard
+      vCard,
+      datasetDistributions: [{
+        id: "",
+        url: "",
+        availability: Availability.HIGH,
+        format: "",
+        description: "",
+        title: "todo"
+      }],
     };
 
     editDataset(datasetId!, payload).then(() => {

@@ -94,7 +94,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                         </td>
                         <td>
                             <span>
-                                {!dataset.datasetdistribution && '📄'}
+                                {!dataset.datasetDistributions && '📄'}
                                 {dataset.theme || 'Untitled Dataset'}
                             </span>
                         </td>
@@ -118,7 +118,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                         <td>21 Jan 2013</td>
                         <td>
                             <button className={styles.attachButton}>Attach distribution</button>
-                            {!dataset.datasetdistribution && <button className={styles.editButton}>Edit</button>} 
+                            {!dataset.datasetDistributions && <button className={styles.editButton}>Edit</button>} 
                         </td>
                     </tr>))}
                     </tbody>
