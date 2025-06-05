@@ -4,51 +4,29 @@ import { Card, Container, Table, Form, Dropdown } from 'react-bootstrap';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { DatasetDistribution } from '../types/datasetdistribution';
 import { Availability } from '../types/availability';
+import { getDataset } from '../../dataset/api/dataset-fetch';
+import { useParams } from 'react-router-dom';
 
 const DatasetDistributionDownload: React.FC = () => {
+  const { datasetId } = useParams<{ datasetId: string }>();
   const [datasetDistributions, setDatasetDistributions] = useState<DatasetDistribution[] | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
-      const datasetDistributions: DatasetDistribution[] = [
-        {
-          id: '1',
-          title: 'Distribution 1',
-          url: 'https://example.com/distribution1',
-          availability: Availability.VERY_HIGH,
-          format: 'CSV',
-          description: ''
-        },
-        {
-          id: '2',
-          title: 'Distribution 2',
-          url: 'https://example.com/distribution2',
-          availability: Availability.LOW,
-          format: 'JSON',
-          description: ''
-        },
-        {
-          id: '3',
-          title: 'Distribution 3',
-          url: 'https://example.com/distribution3',
-          availability: Availability.VERY_HIGH,
-          format: 'CSV',
-          description: ''
-        }
-      ]
-      setDatasetDistributions(datasetDistributions);
+      if (!datasetId) return;
+      const dataset = await getDataset(datasetId);
+      setDatasetDistributions(dataset.datasetDistributions || []);
     };
-    // const datasetDistributions = await fetchDatasetDistributions();
     loadData();
-  }, []);
+  }, [datasetId]);
 
   return (
     <div className={styles.container}>
       <div className={styles.backBtn}>
-        <BackButtonComponent to='/' />
+        <BackButtonComponent to='/dataset-catalog' />
       </div>
       <div className={styles.title}>
-        Download Distributions for Dataset #1
+        Download Distributions for Dataset #{datasetId}
       </div>
       <Container fluid className="d-flex justify-content-center pt-5">
         <Card className="col-8" style={{ borderRadius: '10px' }}>

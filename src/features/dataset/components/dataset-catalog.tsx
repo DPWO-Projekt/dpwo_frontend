@@ -9,6 +9,7 @@ import { BackButtonComponent } from '../../../components/back-button/back-button
 import { Dataset } from '../types/dataset';
 import { DataSchema } from '../../dataschema/types/dataschema';
 import { setDataSchema } from '../api/dataset-set-dataschema';
+import { AuthService } from '../../auth/services/auth.service';
 
 interface DatasetCatalogProps {
 }
@@ -20,16 +21,18 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     const [renderState, setRenderState] = useState<RenderState | null>(null);
     const [showAddModal, setShowAddModal] = useState(false);
     const [dataschemas, setDataSchemas] = useState<DataSchema[]>()
+    const [userRole, setUserRole] = useState<string | null>(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
+        setUserRole(AuthService.getUserRole());
         const loadData = async () => {
             await catalogService.fetchCatalog();
             setDataSchemas(await fetchAllDataSchema());
             setRenderState(catalogService.getState());
         };
-        loadData().then();
+        loadData();
     }, []);
 
     const handleNavigate = (subCatalogId: string | undefined) => {
@@ -204,11 +207,28 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
                                 </td>
                                 <td>21 Jan 2013</td>
                                 <td>
-                                    <Pencil
-                                        style={{ cursor: 'pointer', marginRight: '10px' }}
-                                        onClick={() => navigate(`/dataset-edit/${dataset.id}`)}
-                                    />
-                                    <Trash style={{ cursor: 'pointer' }} />
+                                    {userRole === 'DATA_USER' ? (
+                                        <Button
+                                            className="me-1"
+                                            style={{
+                                                backgroundColor: '#28a745',
+                                                borderColor: '#28a745',
+                                                borderRadius: '20px',
+                                                padding: '5px 20px',
+                                            }}
+                                            onClick={() => navigate(`/datasetdistribution/${dataset.id}`)}
+                                        >
+                                            Download distribution
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Pencil
+                                                style={{ cursor: 'pointer', marginRight: '10px' }}
+                                                onClick={() => navigate(`/dataset-edit/${dataset.id}`)}
+                                            />
+                                            <Trash style={{ cursor: 'pointer' }} />
+                                        </>
+                                    )}
                                 </td>
                             </tr>))}
                         </tbody>
