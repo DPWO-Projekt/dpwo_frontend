@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { RegisterFormData } from '../types/RegisterFormData';
 
 const API_REGISTER_URL = '/api/auth/register';
@@ -26,6 +27,9 @@ export const register = async (payload: RegisterFormData): Promise<void> => {
             console.error("Failed to parse error response:", e);
         }
         console.error('Failed to register:', response.status, errorData);
+        toast.error('Registration failed!');
         throw new Error(errorData?.message || `Failed to register. Status: ${response.status}`);
+    } else {
+        toast.success('Registration successful!');
     }
 }; 

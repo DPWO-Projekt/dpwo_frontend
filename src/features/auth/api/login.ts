@@ -1,5 +1,6 @@
 import { LoginFormData } from '../types/LoginFormData';
 import { AuthService } from '../services/auth.service';
+import { toast } from 'react-toastify';
 
 const API_LOGIN_URL = '/api/auth/login';
 
@@ -24,9 +25,11 @@ export const login = async (payload: LoginFormData): Promise<void> => {
             console.error("Failed to parse error response:", e);
         }
         console.error('Failed to login:', response.status, errorData);
+        toast.error('Login failed!');
         throw new Error(errorData?.message || `Failed to login. Status: ${response.status}`);
     }
 
     const data: LoginResponse = await response.json();
     AuthService.setToken(data.token);
+    toast.success('Login successful!');
 }; 
