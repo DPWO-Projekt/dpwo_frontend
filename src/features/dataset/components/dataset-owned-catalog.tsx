@@ -1,15 +1,15 @@
-import {FC, useEffect, useRef, useState} from 'react';
-import {CatalogService, RenderState} from "../api/dataset-catalog-service";
+import {FC, useEffect, useState} from 'react';
+import {RenderState} from "../api/dataset-catalog-service";
 import { Link, useNavigate } from 'react-router';
 import styles from '../styles/dataset-owned-catalog.module.css';
-import { Button, Card, Container, Dropdown, Form, Table } from 'react-bootstrap';
+import { Card, Container, Dropdown, Form, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { Dataset } from '../types/dataset';
-import { getAllDatasets } from '../api/dataset-fetchAll';
 import { DataSchema } from '../../dataschema/types/dataschema';
 import { fetchAllDataSchema } from '../../dataschema/api/dataschema-fetchAll';
 import { setDataSchema } from '../api/dataset-set-dataschema';
+import { getOwnedDatasets } from '../api/dataset-fetch-owned';
 // import { FaRegFile } from "react-icons/fa";
 
 interface CatalogProps {
@@ -18,7 +18,7 @@ interface CatalogProps {
 const DataSetOwnedCatalog: FC<CatalogProps> = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [fetchError, setFetchError] = useState<string | null>(null);
-    const [datasets, setDatasets] = useState<Dataset[] | null>(null);
+    const [datasets, setDatasets] = useState<Dataset[]>([]);
     const [dataschemas, setDataSchemas] = useState<DataSchema[]>([]);
     const [renderState, setRenderState] = useState<RenderState | null>(null);
 
@@ -28,7 +28,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const response = await setDataSchema(datasetId, dataschemaId);
         if (response.ok) {
             setIsLoading(true);
-            const data = await getAllDatasets();
+            const data = await getOwnedDatasets();
             setDatasets(data);
             const schemas = await fetchAllDataSchema();
             setDataSchemas(schemas);
@@ -40,7 +40,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const loadData = async () => {
             try {
                 setIsLoading(true);
-                const data = await getAllDatasets();
+                const data = await getOwnedDatasets();
                 setDatasets(data);
                 const schemas = await fetchAllDataSchema();
                 setDataSchemas(schemas);
@@ -87,8 +87,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                     </thead>
                     <tbody>
 
-                    {/* Datasets */}
-                    {datasets!.map((dataset) => (<tr key={dataset.id}>
+                    {datasets.length > 0 && datasets.map((dataset) => (<tr key={dataset.id}>
                         <td>
                             <Form.Check type="checkbox"/>
                         </td>

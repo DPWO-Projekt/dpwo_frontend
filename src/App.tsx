@@ -13,6 +13,7 @@ import Login from './features/auth/components/login';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import DataSetOwnedCatalog from './features/dataset/components/dataset-owned-catalog';
 import DatasetDistributionDownload from './features/datasetdistribution/components/datasetdistribution-download';
+import DatasetDistributionAdd from './features/datasetdistribution/components/datasetdistribution-add';
 
 function App() {
     return (
@@ -60,6 +61,11 @@ function App() {
                 <Route path="/dataset-owned" element={
                     <ProtectedRoute>
                         <DataSetOwnedCatalog/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/datasetdistribution-add/" element={
+                    <ProtectedRoute>
+                        <DatasetDistributionAdd/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/datasetdistribution/:datasetId" element={
