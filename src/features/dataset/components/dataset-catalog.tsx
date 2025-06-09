@@ -224,7 +224,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
                                         <>
                                             <Pencil
                                                 style={{ cursor: 'pointer', marginRight: '10px' }}
-                                                onClick={() => navigate(`/dataset-edit/${dataset.id}`)}
+                                                onClick={() => navigate(`/dataset-edit/${dataset.id}`, { state: { parentCatalog: currentCatalog.id } })}
                                             />
                                             <Trash style={{ cursor: 'pointer' }} />
                                         </>

@@ -10,4 +10,5 @@ export interface Dataset {
     languageSpecificDatasetInfo: LanguageSpecificDatasetInfo[];
     schemaId: string;
     datasetDistributions?: DatasetDistribution[];
+    parentCatalog?: string;
 }
