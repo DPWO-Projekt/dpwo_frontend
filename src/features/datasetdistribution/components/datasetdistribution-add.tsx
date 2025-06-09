@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Trash, Send } from 'react-bootstrap-icons'
 import { toast } from 'react-toastify';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
+import { Availability } from '../types/availability';
 
 export interface Property {
   type: string;
@@ -38,6 +39,9 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
     }
   ]);
 
+  const formats = ["JSON", "CSV"];
+  const availabilities = ["VERY_HIGH", "HIGH", "MEDIUM", "LOW", "VERY_LOW"];
+  
   const handleAddProperty = () => {
     setSchemaProperties([
       ...schemaProperties,
@@ -128,7 +132,7 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Access URL</InputGroup.Text>
             <Form.Control
-              className={`${styles.inputValueFull}`}
+              className={`${styles.inputValue}`}
               placeholder="Theme"
               aria-label="Theme"
               value={datasetName}
@@ -139,29 +143,39 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Availability</InputGroup.Text>
             <Form.Control
-              className={`${styles.inputValueFull}`}
+              className={`${styles.inputValue}`}
               placeholder="Theme"
               aria-label="Theme"
+              as="select"
               value={datasetName}
               onChange={(e) => setdatasetName(e.target.value)}
               required
-            />
+            >
+            {availabilities.map((av) => (
+              <option key={av} value={av}>{av}</option>
+            ))}
+            </Form.Control>
           </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Format</InputGroup.Text>
             <Form.Control
-              className={`${styles.inputValueFull}`}
+              className={`${styles.inputValue}`}
               placeholder="Theme"
               aria-label="Theme"
               value={datasetName}
+              as="select"
               onChange={(e) => setdatasetName(e.target.value)}
               required
-            />
+            >
+            {formats.map((format) => (
+              <option key={format} value={format}>{format}</option>
+            ))}
+          </Form.Control>
           </InputGroup>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Distribution title</InputGroup.Text>
             <Form.Control
-              className={`${styles.inputValueFull}`}
+              className={`${styles.inputValue}`}
               placeholder="Theme"
               aria-label="Theme"
               value={datasetName}
@@ -169,6 +183,14 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
               required
             />
           </InputGroup>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            className={`${styles.formTextArea} mx-auto`}
+            placeholder="Dataset description."
+            aria-label="Dataset description."
+            required
+          />
         </div>
 
         <div className={styles.section}>
