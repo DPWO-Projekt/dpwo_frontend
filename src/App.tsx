@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes} from "react-router";
+import { Route, Routes } from "react-router";
 import Home from "./features/home/components/home";
 import DatasetCatalog from './features/dataset/components/dataset-catalog';
 import DatasetEdit from './features/dataset/components/dataset-edit';
@@ -13,60 +13,31 @@ import Login from './features/auth/components/login';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import DataSetOwnedCatalog from './features/dataset/components/dataset-owned-catalog';
 import DatasetDistributionDownload from './features/datasetdistribution/components/datasetdistribution-download';
+import AppNavbar from "./features/navbar/components/AppNavbar";
 
 function App() {
     return (
         <div>
             <ToastContainer />
             <Routes>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/register" element={<Register/>}/>
-                
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
                 <Route path="/" element={
                     <ProtectedRoute>
-                        <Home/>
+                        <AppNavbar />
                     </ProtectedRoute>
-                }/>
-                <Route path="/dataset-add" element={
-                    <ProtectedRoute>
-                        <DatasetAdd/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataschema-add" element={
-                    <ProtectedRoute>
-                        <DataSchemaAdd/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataschema-catalog" element={
-                    <ProtectedRoute>
-                        <DataSchemaCatalog/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataset-catalog" element={
-                    <ProtectedRoute>
-                        <DatasetCatalog/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataset-edit/:datasetId" element={
-                    <ProtectedRoute>
-                        <DatasetEdit/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataschema-edit/:schemaId" element={
-                    <ProtectedRoute>
-                        <DataSchemaEdit/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/dataset-owned" element={
-                    <ProtectedRoute>
-                        <DataSetOwnedCatalog/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/datasetdistribution/:datasetId" element={
-                    <ProtectedRoute>
-                        <DatasetDistributionDownload/>
-                    </ProtectedRoute>
-                }/>
+                }>
+                    <Route index element={<Home />} />
+                    <Route path="dataset-add" element={<DatasetAdd />} />
+                    <Route path="dataschema-add" element={<DataSchemaAdd />} />
+                    <Route path="dataschema-catalog" element={<DataSchemaCatalog />} />
+                    <Route path="dataset-catalog" element={<DatasetCatalog />} />
+                    <Route path="dataset-edit/:datasetId" element={<DatasetEdit />} />
+                    <Route path="dataschema-edit/:schemaId" element={<DataSchemaEdit />} />
+                    <Route path="dataset-owned" element={<DataSetOwnedCatalog />} />
+                    <Route path="datasetdistribution/:datasetId" element={<DatasetDistributionDownload />} />
+                </Route>
             </Routes>
         </div>
     );

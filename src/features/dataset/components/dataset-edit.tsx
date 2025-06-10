@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Form, Button, InputGroup, CloseButton } from 'react-bootstrap';
 import styles from '../styles/dataset-edit.module.css';
-import { Link, useNavigate, useParams } from 'react-router';
+import {Link, useLocation, useNavigate, useParams} from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { getDataset } from '../api/dataset-fetch';
@@ -16,6 +16,9 @@ import { Availability } from '../../datasetdistribution/types/availability';
 const DatasetEdit: FC = () => {
   const { datasetId } = useParams<{ datasetId: string }>();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const { parentCatalog } = location.state || {};
 
   const [theme, setTheme] = useState('');
   const [uri, setUri] = useState('');
@@ -125,6 +128,7 @@ const DatasetEdit: FC = () => {
         description: "",
         title: "todo"
       }],
+        parentCatalog: parentCatalog !== "root" ? parentCatalog : undefined,
     };
 
     editDataset(datasetId!, payload).then(() => {
