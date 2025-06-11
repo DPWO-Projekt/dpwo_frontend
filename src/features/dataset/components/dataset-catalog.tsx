@@ -236,30 +236,34 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
 
                     {/* Add Dataset and Catalog Buttons */}
                     <div className="d-flex justify-content-center">
-                        <Button
-                            className="me-1"
-                            style={{
-                                backgroundColor: '#28a745',
-                                borderColor: '#28a745',
-                                borderRadius: '20px',
-                                padding: '5px 20px',
-                            }}
-                            onClick={() => navigate('/dataset-add', { state: { parentCatalog: currentCatalog.id } })}
-                        >
-                            Add definition of dataset
-                        </Button>
-                        <Button
-                            className="ms-1"
-                            style={{
-                                backgroundColor: '#ece9e2',
-                                borderColor: '#ece9e2',
-                                borderRadius: '20px',
-                                padding: '5px 20px',
-                            }}
-                            onClick={() => setShowAddModal(true)}
-                        >
-                            <span style={{ color: 'black' }}>New catalog</span>
-                        </Button>
+                        {userRole !== 'DATA_USER' && (
+                            <div>
+                            <Button
+                                className="me-1"
+                                style={{
+                                    backgroundColor: '#28a745',
+                                    borderColor: '#28a745',
+                                    borderRadius: '20px',
+                                    padding: '5px 20px',
+                                }}
+                                onClick={() => navigate('/dataset-add', { state: { parentCatalog: currentCatalog.id } })}
+                            >
+                                Add definition of dataset
+                            </Button>
+                            <Button
+                                className="ms-1"
+                                style={{
+                                    backgroundColor: '#ece9e2',
+                                    borderColor: '#ece9e2',
+                                    borderRadius: '20px',
+                                    padding: '5px 20px',
+                                }}
+                                onClick={() => setShowAddModal(true)}
+                            >
+                                <span style={{ color: 'black' }}>New catalog</span>
+                            </Button>
+                            </div>
+                        )}
                     </div>
                 </Card.Body>
             </Card>

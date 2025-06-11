@@ -9,7 +9,6 @@ import { editDataset } from '../api/dataset-edit';
 import { Dataset } from '../types/dataset';
 import { VCard } from '../types/v-card';
 import { LanguageSpecificDatasetInfo } from '../types/language-specific-dataset-info';
-import { ArrowLeft } from 'react-bootstrap-icons'
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { Availability } from '../../datasetdistribution/types/availability';
 
@@ -120,19 +119,12 @@ const DatasetEdit: FC = () => {
       languageSpecificDatasetInfo: languageSpecificDatasetInfoPayload,
       schemaId,
       vCard,
-      datasetDistributions: [{
-        id: "",
-        url: "",
-        availability: Availability.HIGH,
-        format: "",
-        description: "",
-        title: "todo"
-      }],
-        parentCatalog: parentCatalog !== "root" ? parentCatalog : undefined,
+      parentCatalog: parentCatalog !== "root" ? parentCatalog : undefined,
     };
 
     editDataset(datasetId!, payload).then(() => {
       toast.success('Dataset updated successfully!');
+      navigate('/dataset-catalog');
     }).catch((err) => {
       console.error(err);
       toast.error('Network error while saving.');

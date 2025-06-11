@@ -3,19 +3,18 @@ import styles from '../styles/datasetdistribution-download.module.css';
 import { Card, Container, Table, Form, Dropdown } from 'react-bootstrap';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { DatasetDistribution } from '../types/datasetdistribution';
-import { Availability } from '../types/availability';
-import { getDataset } from '../../dataset/api/dataset-fetch';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getDatasetDistributions } from '../api/datasetdistribution-fetch';
 
 const DatasetDistributionDownload: React.FC = () => {
   const { datasetId } = useParams<{ datasetId: string }>();
   const [datasetDistributions, setDatasetDistributions] = useState<DatasetDistribution[] | null>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const loadData = async () => {
       if (!datasetId) return;
-      const dataset = await getDataset(datasetId);
-      setDatasetDistributions(dataset.datasetDistributions || []);
+      const dataset = await getDatasetDistributions(datasetId);
+      setDatasetDistributions(dataset);
     };
     loadData();
   }, [datasetId]);
@@ -56,7 +55,7 @@ const DatasetDistributionDownload: React.FC = () => {
                   <td>{distribution.availability}</td>
                   <td>{distribution.format}</td>
                   <td>
-                    <button className={styles.attachButton}>Download</button>
+                     <a href={distribution.url} target="_blank"><button className={styles.attachButton}>Download</button></a> 
                   </td>
                 </tr>))
               ) : (
