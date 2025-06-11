@@ -63,7 +63,7 @@ function App() {
                         <DataSetOwnedCatalog/>
                     </ProtectedRoute>
                 }/>
-                <Route path="/datasetdistribution-add/" element={
+                <Route path="/datasetdistribution-add/:datasetId/" element={
                     <ProtectedRoute>
                         <DatasetDistributionAdd/>
                     </ProtectedRoute>

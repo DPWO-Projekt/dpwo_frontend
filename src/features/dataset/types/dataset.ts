@@ -9,5 +9,4 @@ export interface Dataset {
     vCard?: VCard;
     languageSpecificDatasetInfo: LanguageSpecificDatasetInfo[];
     schemaId: string;
-    datasetDistributions?: DatasetDistribution[];
 }

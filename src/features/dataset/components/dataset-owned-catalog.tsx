@@ -10,6 +10,7 @@ import { DataSchema } from '../../dataschema/types/dataschema';
 import { fetchAllDataSchema } from '../../dataschema/api/dataschema-fetchAll';
 import { setDataSchema } from '../api/dataset-set-dataschema';
 import { getOwnedDatasets } from '../api/dataset-fetch-owned';
+import { getAllDatasets } from '../api/dataset-fetchAll';
 // import { FaRegFile } from "react-icons/fa";
 
 interface CatalogProps {
@@ -28,7 +29,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const response = await setDataSchema(datasetId, dataschemaId);
         if (response.ok) {
             setIsLoading(true);
-            const data = await getOwnedDatasets();
+            const data = await getAllDatasets();
             setDatasets(data);
             const schemas = await fetchAllDataSchema();
             setDataSchemas(schemas);
@@ -40,8 +41,9 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const loadData = async () => {
             try {
                 setIsLoading(true);
-                const data = await getOwnedDatasets();
+                const data = await getAllDatasets();
                 setDatasets(data);
+                console.log(datasets);
                 const schemas = await fetchAllDataSchema();
                 setDataSchemas(schemas);
                 setIsLoading(false);
@@ -87,13 +89,13 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                     </thead>
                     <tbody>
 
-                    {datasets.length > 0 && datasets.map((dataset) => (<tr key={dataset.id}>
+                    {datasets.map((dataset) => (<tr key={dataset.id}>
                         <td>
                             <Form.Check type="checkbox"/>
                         </td>
                         <td>
                             <span>
-                                {!dataset.datasetDistributions && '📄'}
+                                {'📄'}
                                 {dataset.theme || 'Untitled Dataset'}
                             </span>
                         </td>
@@ -116,8 +118,8 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
                         </td>
                         <td>21 Jan 2013</td>
                         <td>
-                            <button className={styles.attachButton}>Attach distribution</button>
-                            {!dataset.datasetDistributions && <button className={styles.editButton}>Edit</button>} 
+                            <button className={styles.attachButton} onClick={() => navigate(`/datasetdistribution-add/${dataset.id}`)}>Attach distribution</button>
+                            <button className={styles.editButton}>Edit</button>
                         </td>
                     </tr>))}
                     </tbody>

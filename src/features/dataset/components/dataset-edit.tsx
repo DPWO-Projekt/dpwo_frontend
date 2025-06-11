@@ -9,7 +9,6 @@ import { editDataset } from '../api/dataset-edit';
 import { Dataset } from '../types/dataset';
 import { VCard } from '../types/v-card';
 import { LanguageSpecificDatasetInfo } from '../types/language-specific-dataset-info';
-import { ArrowLeft } from 'react-bootstrap-icons'
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { Availability } from '../../datasetdistribution/types/availability';
 
@@ -116,15 +115,7 @@ const DatasetEdit: FC = () => {
       uri,
       languageSpecificDatasetInfo: languageSpecificDatasetInfoPayload,
       schemaId,
-      vCard,
-      datasetDistributions: [{
-        id: "",
-        url: "",
-        availability: Availability.HIGH,
-        format: "",
-        description: "",
-        title: "todo"
-      }],
+      vCard
     };
 
     editDataset(datasetId!, payload).then(() => {

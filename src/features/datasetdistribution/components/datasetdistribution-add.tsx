@@ -1,115 +1,50 @@
 import React, { FC, useState } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import styles from '../styles/datasetdistribution-add.module.css';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { Trash, Send } from 'react-bootstrap-icons'
 import { toast } from 'react-toastify';
 import { BackButtonComponent } from '../../../components/back-button/back-button-component';
 import { Availability } from '../types/availability';
+import { addDatasetDistribution } from '../api/datasetdistribution-add';
 
-export interface Property {
-  type: string;
-  name: string;
-}
-
-export interface InitialDatasetData {
-  name: string;
-  properties: []
-}
-
-interface DataSchemaAddProps {
+interface DatasetDistributionAddProps {
   onSaveSuccess?: () => void;
   onSaveError?: (error: any) => void;
 }
 
-const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
+const DatasetDistributionAdd: FC<DatasetDistributionAddProps> = ({
   onSaveSuccess,
   onSaveError,
 }) => {
-  const availableDataTypes = ["text", "decimal", "boolean", "date", "link"]
-  const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
-  const [datasetName, setdatasetName] = useState('');
-  const [schemaProperties, setSchemaProperties] = useState([
-    {
-      type: availableDataTypes[0],
-      name: '',
-      id: uuidv4()
-    }
-  ]);
-
   const formats = ["JSON", "CSV"];
   const availabilities = ["VERY_HIGH", "HIGH", "MEDIUM", "LOW", "VERY_LOW"];
+  const { datasetId } = useParams<{ datasetId: string }>();
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const [url, setUrl] = useState('');
+  const [availability, setAvailability] = useState(availabilities[0]);
+  const [format, setFormat] = useState(formats[0]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   
-  const handleAddProperty = () => {
-    setSchemaProperties([
-      ...schemaProperties,
-      {
-        type: availableDataTypes[0],
-        name: '',
-        id: uuidv4()
-      },
-    ]);
-    console.log(schemaProperties);
-  };
-
-  const handleRemoveProperty = (idToRemove: string) => {
-    if (schemaProperties.length <= 1) {
-      alert('You must have at least one property.');
-      return;
-    }
-    setSchemaProperties(schemaProperties.filter((prop) => prop.id !== idToRemove));
-  };
-
-  type DescriptionField = keyof (Property & { id: string });
-  const handlePropChange = (idToUpdate: string, field: DescriptionField, value: string) => {
-    setSchemaProperties(
-      schemaProperties.map((prop) => {
-        if (prop.id === idToUpdate) {
-          return { ...prop, [field]: value };
-        }
-        return prop;
-      })
-    );
-  };
-
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-
-    var propMap: any = {};
-    schemaProperties.forEach(prop => {
-      propMap[prop.name] = prop.type;
-    });
     const payload = {
-      name: datasetName,
-      properties: propMap
-    };
+      url: url,
+      availability: availability,
+      format: format,
+      title: title,
+      description: description
+    }
     console.log('Submitting Payload for Add:', JSON.stringify(payload));
 
     try {
-      const response = await fetch(`http://localhost:8080/api/dataschema`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        console.log('Dataset updated successfully!');
-        onSaveSuccess?.();
-        toast('Dataschema added successfully!');
-        navigate("/dataschema-catalog");
-      } else {
-        const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response' }));
-        console.error('Failed Response:', response.status, errorData);
-        onSaveError?.(errorData);
-        toast('Unexpected error.');
-      }
+      await addDatasetDistribution(datasetId!, payload);
+      toast("Distribution added!");
+      navigate("/dataset-owned")
     } catch (error) {
       console.error('Network or other error:', error);
       onSaveError?.(error);
@@ -122,21 +57,22 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
   return (
     <div className={styles.container}>
       <div>
-        <BackButtonComponent to='/dataschema-catalog' />
+        <BackButtonComponent to='/dataset-owned'/>
       </div>
 
       <div className={styles.header}>Attach distribution to dataset</div>
-
+      <div className={styles.subheader}>Dataset: {datasetId}</div>
       <Form onSubmit={handleSubmit}>
         <div className={styles.section}>
           <InputGroup className={`${styles.inputGroup} mx-auto`}>
             <InputGroup.Text className={`${styles.inputLabel}`}>Access URL</InputGroup.Text>
             <Form.Control
+              type="url"
               className={`${styles.inputValue}`}
-              placeholder="Theme"
-              aria-label="Theme"
-              value={datasetName}
-              onChange={(e) => setdatasetName(e.target.value)}
+              placeholder="URL"
+              aria-label="URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
               required
             />
           </InputGroup>
@@ -144,11 +80,11 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
             <InputGroup.Text className={`${styles.inputLabel}`}>Availability</InputGroup.Text>
             <Form.Control
               className={`${styles.inputValue}`}
-              placeholder="Theme"
-              aria-label="Theme"
+              placeholder="Availability"
+              aria-label="Availability"
               as="select"
-              value={datasetName}
-              onChange={(e) => setdatasetName(e.target.value)}
+              value={availability}
+              onChange={(e) => setAvailability(e.target.value)}
               required
             >
             {availabilities.map((av) => (
@@ -160,11 +96,11 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
             <InputGroup.Text className={`${styles.inputLabel}`}>Format</InputGroup.Text>
             <Form.Control
               className={`${styles.inputValue}`}
-              placeholder="Theme"
-              aria-label="Theme"
-              value={datasetName}
+              placeholder="Format"
+              aria-label="Format"
+              value={format}
               as="select"
-              onChange={(e) => setdatasetName(e.target.value)}
+              onChange={(e) => setFormat(e.target.value)}
               required
             >
             {formats.map((format) => (
@@ -176,19 +112,21 @@ const DatasetDistributionAdd: FC<DataSchemaAddProps> = ({
             <InputGroup.Text className={`${styles.inputLabel}`}>Distribution title</InputGroup.Text>
             <Form.Control
               className={`${styles.inputValue}`}
-              placeholder="Theme"
-              aria-label="Theme"
-              value={datasetName}
-              onChange={(e) => setdatasetName(e.target.value)}
+              placeholder="Title"
+              aria-label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required
             />
           </InputGroup>
           <Form.Control
             as="textarea"
             rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className={`${styles.formTextArea} mx-auto`}
-            placeholder="Dataset description."
-            aria-label="Dataset description."
+            placeholder="Distribution description."
+            aria-label="Distribution description."
             required
           />
         </div>
