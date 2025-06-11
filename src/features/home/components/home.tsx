@@ -20,6 +20,7 @@ const Home: FC<HomeProps> = () => {
                 return (
                     <>
                         <HomeLinkBox name="owneddataset"/>
+                        <HomeLinkBox name="dataset"/>
                     </>
                 );
             case 'DATA_USER':

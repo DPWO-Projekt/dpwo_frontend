@@ -29,7 +29,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const response = await setDataSchema(datasetId, dataschemaId);
         if (response.ok) {
             setIsLoading(true);
-            const data = await getAllDatasets();
+            const data = await getOwnedDatasets();
             setDatasets(data);
             const schemas = await fetchAllDataSchema();
             setDataSchemas(schemas);
@@ -41,7 +41,7 @@ const DataSetOwnedCatalog: FC<CatalogProps> = () => {
         const loadData = async () => {
             try {
                 setIsLoading(true);
-                const data = await getAllDatasets();
+                const data = await getOwnedDatasets();
                 setDatasets(data);
                 console.log(datasets);
                 const schemas = await fetchAllDataSchema();

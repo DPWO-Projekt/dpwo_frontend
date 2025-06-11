@@ -124,6 +124,7 @@ const DatasetEdit: FC = () => {
 
     editDataset(datasetId!, payload).then(() => {
       toast.success('Dataset updated successfully!');
+      navigate('/dataset-catalog');
     }).catch((err) => {
       console.error(err);
       toast.error('Network error while saving.');
