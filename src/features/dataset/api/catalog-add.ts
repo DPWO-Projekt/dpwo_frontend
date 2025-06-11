@@ -11,7 +11,6 @@ export const addCatalog = async (payload: Catalog): Promise<Catalog> => {
         },
         body: JSON.stringify(payload),
     });
-
     if (!response.ok) {
         let errorData;
         try {
@@ -22,6 +21,5 @@ export const addCatalog = async (payload: Catalog): Promise<Catalog> => {
         console.error('Failed to add catalog:', response.status, errorData);
         throw new Error(errorData?.message || `Failed to add catalog. Status: ${response.status}`);
     }
-
     return await response.json();
 };
