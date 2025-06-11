@@ -26,7 +26,12 @@ function App() {
 
                 <Route path="/" element={
                     <ProtectedRoute>
-                        <AppNavbar />
+                        <Home/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/logout" element={
+                    <ProtectedRoute>
+                        <AppNavbar/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/dataset-add" element={
