@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Link} from "react-router";
 import HomeLinkBox from './home-link-box';
-import styles from '../styles/home.module.css';
+import styles from '../styles/Home.module.css';
 import {AuthService} from '../../auth/services/auth.service';
 
 interface HomeProps {

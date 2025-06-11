@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes} from "react-router";
+import { Route, Routes } from "react-router";
 import Home from "./features/home/components/home";
 import DatasetCatalog from './features/dataset/components/dataset-catalog';
 import DatasetEdit from './features/dataset/components/dataset-edit';
@@ -14,18 +14,19 @@ import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import DataSetOwnedCatalog from './features/dataset/components/dataset-owned-catalog';
 import DatasetDistributionDownload from './features/datasetdistribution/components/datasetdistribution-download';
 import DatasetDistributionAdd from './features/datasetdistribution/components/datasetdistribution-add';
+import AppNavbar from "./features/navbar/components/AppNavbar";
 
 function App() {
     return (
         <div>
             <ToastContainer />
             <Routes>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/register" element={<Register/>}/>
-                
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
                 <Route path="/" element={
                     <ProtectedRoute>
-                        <Home/>
+                        <AppNavbar />
                     </ProtectedRoute>
                 }/>
                 <Route path="/dataset-add" element={

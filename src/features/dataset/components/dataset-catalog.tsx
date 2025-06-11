@@ -66,7 +66,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     if (!renderState) {
         return (<div
             style={{
-                backgroundColor: '#ece9e2',
+                backgroundColor: '#f6f4ec',
                 minHeight: '100vh',
                 display: 'flex',
                 justifyContent: 'center',
@@ -80,7 +80,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     if (renderState.error) {
         return (<div
             style={{
-                backgroundColor: '#ece9e2',
+                backgroundColor: '#f6f4ec',
                 minHeight: '100vh',
                 display: 'flex',
                 justifyContent: 'center',
@@ -94,7 +94,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     if (!renderState.currentCatalog) {
         return (<div
             style={{
-                backgroundColor: '#ece9e2',
+                backgroundColor: '#f6f4ec',
                 minHeight: '100vh',
                 display: 'flex',
                 justifyContent: 'center',
@@ -110,7 +110,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
     const subCatalogs = currentCatalog?.subCatalogs || [];
     const datasets = currentCatalog.datasets || [];
 
-    return (<div style={{ backgroundColor: '#ece9e2', minHeight: '100vh', padding: '50px' }}>
+    return (<div style={{ backgroundColor: '#f6f4ec', minHeight: '100vh', padding: '50px' }}>
         <div>
             <BackButtonComponent to='/' />
         </div>
@@ -224,7 +224,7 @@ const DatasetCatalog: FC<DatasetCatalogProps> = () => {
                                         <>
                                             <Pencil
                                                 style={{ cursor: 'pointer', marginRight: '10px' }}
-                                                onClick={() => navigate(`/dataset-edit/${dataset.id}`)}
+                                                onClick={() => navigate(`/dataset-edit/${dataset.id}`, { state: { parentCatalog: currentCatalog.id } })}
                                             />
                                             <Trash style={{ cursor: 'pointer' }} />
                                         </>
